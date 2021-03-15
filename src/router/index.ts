@@ -3,7 +3,6 @@ import Home from "../views/Home.vue";
 import Register from "@/components/Register.vue";
 import Login from "@/components/Login.vue";
 
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -22,14 +21,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/register",
     name: "register",
-    component: Register,
+    component: Register
   },
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: Login
   }
-
 ];
 
 const router = createRouter({
