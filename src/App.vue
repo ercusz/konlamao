@@ -47,11 +47,14 @@
       <router-view></router-view>
     </div>
   </div>
-
 </template>
 
+
 <script>
-export default {
-  name: 'App',
-}
+  window.onbeforeunload = function(event)
+{
+    app.showModal = true;
+};
 </script>
+
+
