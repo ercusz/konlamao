@@ -3,13 +3,13 @@
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-6">
         <div class="card px-5 py-5">
-          <span class="circle"><i class="fa fa-check"></i></span>
+          <span class="circle bg-dark"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
           <h5 class="mt-3">
-            Join over 10000<br />
-            drunkers from around the kku
+            ขี้เมามากกว่า 10,000 คน<br />
+            จากทั่วทั้งมหาลัยฯ ได้เข้าร่วมแล้ว
           </h5>
           <small class="mt-2 text-muted"
-            >มาร่วมเมาไปกับเรา เมาแม่งซอดแจ้งไปเลย</small
+            >แล้วคุณล่ะรออะไรอยู่? เข้าร่วมกับเรา แล้วเมาไปด้วยกันสิ!</small
           >
 
           <div class="input-group mb-3">
@@ -64,34 +64,77 @@
             />
           </div>
 
+          <div class="mb-3">
+            <v-date-picker v-model="date">
+              <template v-slot="{ inputValue, inputEvents }">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1"
+                    ><font-awesome-icon :icon="['fas', 'calendar-alt']"
+              /></span>
+                  <input class="form-control"
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    placeholder="Date of Birth"
+                    aria-label="Birthdate"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+
+
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               value=""
               id="flexCheckChecked"
-              checked
             />
             <label class="form-check-label" for="flexCheckChecked">
-              I agree all the statements
+              ฉันยอมรับ<a class="fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#TermOfUseModal">ข้อตกลงในการใช้งาน</a>
             </label>
           </div>
-          <button class="btn btn-primary mt-4 signup">
-            Start drunking now
+
+          <!-- Modal -->
+          <div class="modal fade" id="TermOfUseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">ข้อตกลงในการใช้งาน</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  ...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-dark mt-3 bg-black signup">
+            สมัครสมาชิก
           </button>
+
           <div class="text-center mt-3">
-            <span>Or continue with these social profile</span>
+            <span>หรือสมัครสมาชิกด้วยโซเชียลมีเดีย</span>
           </div>
+
           <div class="d-flex justify-content-center mt-4">
-            <span class="social"><i class="fa fa-google"></i></span>
-            <span class="social"><i class="fa fa-facebook"></i></span>
-            <span class="social"><i class="fa fa-twitter"></i></span>
-            <span class="social"><i class="fa fa-linkedin"></i></span>
+            <span class="social"><font-awesome-icon :icon="['fab', 'google']" class="social-icon"/></span>
+            <span class="social"><font-awesome-icon :icon="['fab', 'facebook']" class="social-icon"/></span>
+            <span class="social"><font-awesome-icon :icon="['fab', 'twitter']" class="social-icon"/></span>
+            <span class="social"><font-awesome-icon :icon="['fab', 'linkedin']" class="social-icon"/></span>
           </div>
+
           <div class="text-center mt-4">
-            <span>Already a member?</span>
-            <a href="#" class="text-decoration-none">Login</a>
+            <span>เป็นสมาชิกอยู่แล้ว? </span>
+            <a class="fw-bold text-decoration-none" href="#Login">เข้าสู่ระบบ</a>
           </div>
+
+          
         </div>
       </div>
     </div>
@@ -101,19 +144,20 @@
 <script>
 export default {
   data() {
-    return {};
-  }
+    return {
+      date: null,
+    };
+  },
+  computed: {
+    errorMessage() {
+      if (!this.date) return 'Date is required.';
+      return '';
+    },
+  },
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
-
-body {
-  background-color: #535fe6;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-}
 
 .height {
   height: 100vh;
@@ -132,7 +176,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #5855e7;
   color: black;
   font-size: 10px;
   border-radius: 50%;
@@ -153,7 +196,7 @@ body {
 
 .form-control {
   background-color: #1c1e21;
-  text-indent: 24px;
+  text-indent: 5px;
   font-size: 15px;
 }
 
@@ -161,7 +204,7 @@ body {
   background-color: #25272a;
   box-shadow: none;
   color: black;
-  border-color: #4f63e7;
+  border-color: #7f6ce7;
 }
 
 .form-check-label {
@@ -186,8 +229,14 @@ body {
   cursor: pointer;
 }
 
-.social:hover {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+.social:hover{
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+
+.modal-header{
+  background-color: whitesmoke;
 }
 </style>
