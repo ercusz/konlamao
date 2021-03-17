@@ -2,8 +2,8 @@
   <div class="container mt-5 mb-5">
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-6">
-        <div class="card px-5 py-5">
-          <span class="circle bg-dark"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
+        <div class="card px-5 py-5 text-white bg-dark">
+          <span class="circle bg-danger bg-gradient"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
           <h5 class="mt-3">
             ลงชื่อเข้าใช้
           </h5>
@@ -39,7 +39,7 @@
 
           <div class="form-check">
             <input
-              class="form-check-input"
+              class="form-check-input bg-danger text-gradient"
               type="checkbox"
               value=""
               id="flexCheckChecked"
@@ -49,7 +49,7 @@
             </label>
           </div>
 
-          <button class="btn btn-dark mt-3 bg-black signup">
+          <button class="btn btn-dark mt-3 bg-danger signup">
             เข้าสู่ระบบ
           </button>
 
@@ -66,7 +66,7 @@
 
           <div class="text-center mt-3">
             <span>ยังไม่มีบัญชี? </span>
-            <a class="fw-bold text-decoration-none" href="#Register">สมัครสมาชิก</a>
+            <a class="fw-bold text-decoration-none text-danger text-gradient" href="#Register">สมัครสมาชิก</a>
           </div>
 
           

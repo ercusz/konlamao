@@ -2,8 +2,8 @@
   <div class="container mt-5 mb-5">
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-6">
-        <div class="card px-5 py-5">
-          <span class="circle bg-dark"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
+        <div class="card px-5 py-5 text-white bg-dark">
+          <span class="circle bg-danger bg-gradient"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
           <h5 class="mt-3">
             ขี้เมามากกว่า 10,000 คน<br />
             จากทั่วทั้งมหาลัยฯ ได้เข้าร่วมแล้ว
@@ -21,7 +21,7 @@
               class="form-control"
               placeholder="Username"
               aria-label="Username"
-              aria-describedby="basic-addon1"
+              aria-describedby="basic-addon1"              
             />
           </div>
 
@@ -86,13 +86,13 @@
 
           <div class="form-check">
             <input
-              class="form-check-input"
+              class="form-check-input bg-danger"
               type="checkbox"
               value=""
               id="flexCheckChecked"
             />
             <label class="form-check-label" for="flexCheckChecked">
-              ฉันยอมรับ<a class="fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#TermOfUseModal">ข้อตกลงในการใช้งาน</a>
+              ฉันยอมรับ<a class="fw-bold text-decoration-none text-danger text-gradient" data-bs-toggle="modal" data-bs-target="#TermOfUseModal">ข้อตกลงในการใช้งาน</a>
             </label>
           </div>
 
@@ -101,21 +101,21 @@
             <div class="modal-dialog modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">ข้อตกลงในการใช้งาน</h5>
+                  <h5 class="modal-title text-dark" id="staticBackdropLabel">ข้อตกลงในการใช้งาน</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-dark">
                   ...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                  <button type="button" class="btn btn-secondary bg-dark text-light" data-bs-dismiss="modal">ปิด</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <button class="btn btn-dark mt-3 bg-black signup">
-            สมัครสมาชิก
+          <button class="btn btn-dark mt-3 bg-danger text-dark signup">
+            <strong>สมัครสมาชิก</strong>
           </button>
 
           <div class="text-center mt-3">
@@ -131,7 +131,7 @@
 
           <div class="text-center mt-4">
             <span>เป็นสมาชิกอยู่แล้ว? </span>
-            <a class="fw-bold text-decoration-none" href="#Login">เข้าสู่ระบบ</a>
+            <a class="fw-bold text-decoration-none text-danger text-gradient" href="#Login">เข้าสู่ระบบ</a>
           </div>
 
           
@@ -230,13 +230,14 @@ export default {
 }
 
 .social:hover{
-  background-color: black;
-  border-color: black;
-  color: white;
+  background-color: white;
+  border-color: white;
+  color: black;
 }
 
 
 .modal-header{
   background-color: whitesmoke;
 }
+
 </style>

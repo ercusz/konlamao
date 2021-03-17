@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faCocktail,
+  faGlassCheers,
   faEnvelope,
   faUser,
   faLock,
@@ -19,7 +19,7 @@ import { faGoogle, faFacebook, faTwitter, faLinkedin } from "@fortawesome/free-b
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VCalendar from 'v-calendar';
 
-library.add(faCocktail, faEnvelope, faUser, faLock, faCalendarAlt, faGoogle, faFacebook, faTwitter, faLinkedin, faCheck);
+library.add(faGlassCheers, faEnvelope, faUser, faLock, faCalendarAlt, faGoogle, faFacebook, faTwitter, faLinkedin, faCheck);
 
 createApp(App)
   .use(store)
