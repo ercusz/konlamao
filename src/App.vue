@@ -1,21 +1,20 @@
 <template>
   <div class="wrapper" style="background-color: #414141;">
     <!-- Nav bar -->
-    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-      <div class="container-fluid">
-        <router-link to="/" class="navbar-brand mt-3"
-          style="font-family:Taviraj; margin-left:20px;">
-            <figure>
-              <blockquote class="blockquote">
-                <h2 class="text-danger text-gradient" >konlamao🍺
-                </h2>
-              </blockquote>
-              <figcaption class="blockquote-footer text-light">
-                ค น ล ะ เ ม า
-              </figcaption>
-            </figure>          
-          </router-link
+    <nav
+      class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark shadow-lg p-3"
+    >
+      <div class="container-fluid ">
+        <router-link
+          to="/"
+          class="navbar-brand mt-3"
+          style="font-family:Taviraj; margin-left:20px;"
         >
+          <h3 class="text-gradient" style="color:#ff0000;">konlamao🍺</h3>
+          <figcaption class="blockquote-footer text-light">
+            ค น ล ะ เ ม า
+          </figcaption>
+        </router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -28,7 +27,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <router-link to="/" class="nav-link active" aria-current="page"
                 >Home</router-link
@@ -57,8 +56,8 @@
 </template>
 
 <style>
-  @import url(https://fonts.googleapis.com/css?family=Taviraj);
-  html{
-    background-color: #414141;
-  }
+@import url(https://fonts.googleapis.com/css?family=Taviraj);
+html {
+  background-color: #414141;
+}
 </style>

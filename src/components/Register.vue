@@ -3,7 +3,9 @@
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-6">
         <div class="card px-5 py-5 text-white bg-dark">
-          <span class="circle bg-danger bg-gradient"><font-awesome-icon :icon="['fas', 'check']" style="color: white"/></span>
+          <span class="circle bg-danger bg-gradient"
+            ><font-awesome-icon :icon="['fas', 'check']" style="color: white"
+          /></span>
           <h5 class="mt-3">
             ขี้เมามากกว่า 10,000 คน<br />
             จากทั่วทั้งมหาลัยฯ ได้เข้าร่วมแล้ว
@@ -12,129 +14,176 @@
             >แล้วคุณล่ะรออะไรอยู่? เข้าร่วมกับเรา แล้วเมาไปด้วยกันสิ!</small
           >
 
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"
-              ><font-awesome-icon :icon="['fas', 'user']"
-            /></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              aria-label="Username"
-              aria-describedby="basic-addon1"              
-            />
-          </div>
-
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"
-              ><font-awesome-icon :icon="['fas', 'envelope']"
-            /></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Email"
-              aria-label="Email"
-              aria-describedby="basic-addon1"
-            />
-          </div>
-
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"
-              ><font-awesome-icon :icon="['fas', 'lock']"
-            /></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Password"
-              aria-label="Password"
-              aria-describedby="basic-addon1"
-            />
-          </div>
-
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1"
-              ><font-awesome-icon :icon="['fas', 'lock']"
-            /></span>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Confirm Password"
-              aria-label="Confirm Password"
-              aria-describedby="basic-addon1"
-            />
-          </div>
-
-          <div class="mb-3">
-            <v-date-picker v-model="date">
-              <template v-slot="{ inputValue, inputEvents }">
-                <div class="input-group">
-                  <span class="input-group-text" id="basic-addon1"
-                    ><font-awesome-icon :icon="['fas', 'calendar-alt']"
+          <form @submit.prevent="signup">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                ><font-awesome-icon :icon="['fas', 'user']"
               /></span>
-                  <input class="form-control"
-                    :value="inputValue"
-                    v-on="inputEvents"
-                    placeholder="Date of Birth"
-                    aria-label="Birthdate"
-                    aria-describedby="basic-addon1"
-                  />
-                </div>
-              </template>
-            </v-date-picker>
-          </div>
-
-
-          <div class="form-check">
-            <input
-              class="form-check-input bg-danger"
-              type="checkbox"
-              value=""
-              id="flexCheckChecked"
-            />
-            <label class="form-check-label" for="flexCheckChecked">
-              ฉันยอมรับ<a class="fw-bold text-decoration-none text-danger text-gradient" data-bs-toggle="modal" data-bs-target="#TermOfUseModal">ข้อตกลงในการใช้งาน</a>
-            </label>
-          </div>
-
-          <!-- Modal -->
-          <div class="modal fade" id="TermOfUseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title text-dark" id="staticBackdropLabel">ข้อตกลงในการใช้งาน</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-dark">
-                  ...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...<br>...ทดสอบ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary bg-dark text-light" data-bs-dismiss="modal">ปิด</button>
-                </div>
-              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                v-model="username"
+              />
             </div>
-          </div>
 
-          <button class="btn btn-dark mt-3 bg-danger text-dark signup">
-            <strong>สมัครสมาชิก</strong>
-          </button>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                ><font-awesome-icon :icon="['fas', 'envelope']"
+              /></span>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                aria-label="Email"
+                aria-describedby="basic-addon1"
+                v-model="email"
+              />
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                ><font-awesome-icon :icon="['fas', 'lock']"
+              /></span>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                aria-label="Password"
+                aria-describedby="basic-addon1"
+                v-model="password"
+              />
+            </div>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"
+                ><font-awesome-icon :icon="['fas', 'lock']"
+              /></span>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Confirm Password"
+                aria-label="Confirm Password"
+                aria-describedby="basic-addon1"
+                v-model="confirmPassword"
+              />
+            </div>
+
+            <div class="mb-3">
+              <v-date-picker v-model="date">
+                <template v-slot="{ inputValue, inputEvents }">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1"
+                      ><font-awesome-icon :icon="['fas', 'calendar-alt']"
+                    /></span>
+                    <input
+                      class="form-control"
+                      :value="inputValue"
+                      v-on="inputEvents"
+                      placeholder="Date of Birth"
+                      aria-label="Birthdate"
+                      aria-describedby="basic-addon1"
+                    />
+                  </div>
+                </template>
+              </v-date-picker>
+            </div>
+
+            <div class="form-check">
+              <input
+                class="form-check-input bg-danger"
+                type="checkbox"
+                value=""
+                id="flexCheckChecked"
+              />
+              <label class="form-check-label" for="flexCheckChecked">
+                ฉันยอมรับ<a
+                  class="fw-bold text-decoration-none text-danger text-gradient"
+                  data-bs-toggle="modal"
+                  data-bs-target="#TermOfUseModal"
+                  >ข้อตกลงในการใช้งาน</a
+                >
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%;">
+              สมัครสมาชิก
+            </button>
+          </form>
 
           <div class="text-center mt-3">
             <span>หรือสมัครสมาชิกด้วยโซเชียลมีเดีย</span>
           </div>
 
           <div class="d-flex justify-content-center mt-4">
-            <span class="social"><font-awesome-icon :icon="['fab', 'google']" class="social-icon"/></span>
-            <span class="social"><font-awesome-icon :icon="['fab', 'facebook']" class="social-icon"/></span>
-            <span class="social"><font-awesome-icon :icon="['fab', 'twitter']" class="social-icon"/></span>
-            <span class="social"><font-awesome-icon :icon="['fab', 'linkedin']" class="social-icon"/></span>
+            <span class="social"
+              ><font-awesome-icon :icon="['fab', 'google']" class="social-icon"
+            /></span>
+            <span class="social"
+              ><font-awesome-icon
+                :icon="['fab', 'facebook']"
+                class="social-icon"
+            /></span>
+            <span class="social"
+              ><font-awesome-icon :icon="['fab', 'twitter']" class="social-icon"
+            /></span>
+            <span class="social"
+              ><font-awesome-icon
+                :icon="['fab', 'linkedin']"
+                class="social-icon"
+            /></span>
           </div>
 
           <div class="text-center mt-4">
             <span>เป็นสมาชิกอยู่แล้ว? </span>
-            <a class="fw-bold text-decoration-none text-danger text-gradient" href="#Login">เข้าสู่ระบบ</a>
+            <a
+              class="fw-bold text-decoration-none text-danger text-gradient"
+              href="#Login"
+              >เข้าสู่ระบบ</a
+            >
           </div>
 
-          
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="TermOfUseModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title text-dark" id="staticBackdropLabel">
+                    ข้อตกลงในการใช้งาน
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body text-dark">
+                  ...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary bg-dark text-light"
+                    data-bs-dismiss="modal"
+                  >
+                    ปิด
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -142,23 +191,48 @@
 </template>
 
 <script>
+import firebase from "firebase";
+import { db } from "../main";
 export default {
+  
   data() {
     return {
-      date: null,
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      date: new Date(),
     };
   },
-  computed: {
-    errorMessage() {
-      if (!this.date) return 'Date is required.';
-      return '';
-    },
-  },
+  methods: {
+    signup() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          db.collection("users").doc(firebase.auth().currentUser.uid).set({
+              username: this.username,
+              createdDate: firebase.firestore.Timestamp.now(),
+              age: firebase.firestore.Timestamp.now().toDate - this.date,
+              isStaff: false
+          })
+          .then(() => {
+              alert('Successfully registered! Please login.');
+              this.$router.push("/login");
+          })
+          .catch((error) => {
+              console.error("Error writing document: ", error);
+          });          
+        })
+        .catch(error => {
+          alert(error.message);
+        });
+    }
+  }
 };
 </script>
 
 <style>
-
 .height {
   height: 100vh;
 }
@@ -229,15 +303,13 @@ export default {
   cursor: pointer;
 }
 
-.social:hover{
+.social:hover {
   background-color: white;
   border-color: white;
   color: black;
 }
 
-
-.modal-header{
+.modal-header {
   background-color: whitesmoke;
 }
-
 </style>
