@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5 mb-5">
     <div class="row d-flex align-items-center justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-7">
         <div class="card px-5 py-5 text-white bg-dark">
           <span class="circle bg-danger bg-gradient"
             ><font-awesome-icon :icon="['fas', 'check']" style="color: white"
@@ -193,6 +193,13 @@
 <script>
 import firebase from "firebase";
 import { db } from "../main";
+
+function _calculateAge(birthday) { // birthday is a date
+    const ageDifMs = Date.now() - birthday.getTime();
+    const ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
+
 export default {
   
   data() {
@@ -206,30 +213,39 @@ export default {
   },
   methods: {
     signup() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => {
-          db.collection("users").doc(firebase.auth().currentUser.uid).set({
-              username: this.username,
-              createdDate: firebase.firestore.Timestamp.now(),
-              age: firebase.firestore.Timestamp.now().toDate - this.date,
-              isStaff: false
-          })
+      if(_calculateAge(this.date) >= 20){
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
           .then(() => {
-              alert('Successfully registered! Please login.');
-              this.$router.push("/login");
+            db.collection("users").doc(firebase.auth().currentUser.uid).set({
+                username: this.username,
+                birthDate: this.date,
+                createdDate: firebase.firestore.Timestamp.now(),
+                isStaff: false
+            })
+            .then(() => {
+                alert('Successfully registered! Please login.');
+                this.$router.push("/login");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });          
           })
-          .catch((error) => {
-              console.error("Error writing document: ", error);
-          });          
-        })
-        .catch(error => {
-          alert(error.message);
-        });
+          .catch(error => {
+            alert(error.message);
+          });
+      }
+      else{
+        alert('You\'re not allowed to use the website.');
+      }
+      
     }
   }
 };
+
+
+
 </script>
 
 <style>

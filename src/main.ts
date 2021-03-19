@@ -23,8 +23,22 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VCalendar from "v-calendar";
-import firebase from "firebase";
-import  { db } from "./db";
+
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: ***REMOVED***,
+  authDomain: ***REMOVED***,
+  projectId: ***REMOVED***,
+  storageBucket: ***REMOVED***,
+  messagingSenderId: ***REMOVED***,
+  appId: ***REMOVED***,
+  measurementId: ***REMOVED***
+};
+
+export const db = firebase.initializeApp(firebaseConfig).firestore();
+
 
 library.add(
   faGlassCheers,
