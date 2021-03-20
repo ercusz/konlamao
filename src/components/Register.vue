@@ -268,6 +268,7 @@ export default {
   padding: 20px;
   background-color: #1c1e21;
   color: black;
+  width:30vh;
 }
 
 .circle {
