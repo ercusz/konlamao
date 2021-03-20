@@ -1,63 +1,134 @@
 <template>
-  <div class="wrapper" style="background-color: #414141;">
-    <!-- Nav bar -->
-    <nav
-      class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark shadow-lg p-3"
-    >
-      <div class="container-fluid ">
-        <router-link
-          to="/"
-          class="navbar-brand mt-3"
-          style="font-family:Taviraj; margin-left:20px;"
-        >
-          <h3 class="text-gradient" style="color:#ff0000;">konlamao🍺</h3>
-          <figcaption class="blockquote-footer text-light">
-            ค น ล ะ เ ม า
-          </figcaption>
-        </router-link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link to="/" class="nav-link active" aria-current="page"
-                >Home</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link to="/register" class="nav-link"
-                >Register</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link to="/about" class="nav-link" tabindex="-1"
-                >About</router-link
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto">
 
+    <div>
+      
+      <nav class="navbar nav-masthead justify-content-center float-md-end navbar-expand-md navbar-dark">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="#"><h3 class="float-md-start mb-0" style="font-family:Taviraj; font-weight: bold;">คนละเมา🍺</h3></a>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <router-link to="/" active-link="active" class="nav-link" aria-current="page"
+                  >Home</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link to="/register" active-link="active" class="nav-link"
+                  >Register</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link to="/login" active-link="active" class="nav-link"
+                  >Login</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link to="/about" active-link="active" class="nav-link" tabindex="-1"
+                  >About</router-link
+                >
+              </li>  
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-3">
     <!-- Router view -->
     <div class="container pt-5 pb-5">
       <router-view></router-view>
     </div>
-  </div>
+  </main>
+
+  <footer class="m-auto text-white-50">
+    <p>created for educational purposes</p>
+  </footer>
+</div>
 </template>
+
+
+<script>
+export default {
+  data: () => ({
+  })
+};
+
+</script>
 
 <style>
 @import url(https://fonts.googleapis.com/css?family=Taviraj);
-html {
-  background-color: #414141;
+
+#app{
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+  url(https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D),
+  linear-gradient(#4e4376, #2b5876);
+  color: white;
 }
+
+html {  
+  height: 100%;
+}
+/*
+ * Globals
+ */
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+
+/*
+ * Base structure
+ */
+
+body {
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+}
+
+.cover-container {
+  max-width: 72em;
+}
+
+
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+a {
+  color: inherit;
+}
+
+.router-link-exact-active{
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
 </style>

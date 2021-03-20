@@ -54,6 +54,10 @@
                 aria-label="Password"
                 aria-describedby="basic-addon1"
                 v-model="password"
+                name="password"
+                data-bv-identical="true"
+                data-bv-identical-field="confirmPassword"
+                data-bv-identical-message="The password and its confirm are not the same"
               />
             </div>
 
@@ -68,6 +72,10 @@
                 aria-label="Confirm Password"
                 aria-describedby="basic-addon1"
                 v-model="confirmPassword"
+                name="confirmPassword"
+                data-bv-identical="true"
+                data-bv-identical-field="password"
+                data-bv-identical-message="The password and its confirm are not the same"
               />
             </div>
 
@@ -85,6 +93,7 @@
                       placeholder="Date of Birth"
                       aria-label="Birthdate"
                       aria-describedby="basic-addon1"
+                      required
                     />
                   </div>
                 </template>
@@ -95,9 +104,10 @@
               <input
                 class="form-check-input bg-danger"
                 type="checkbox"
-                value=""
                 id="flexCheckChecked"
+                required
               />
+              
               <label class="form-check-label" for="flexCheckChecked">
                 ฉันยอมรับ<a
                   class="fw-bold text-decoration-none text-danger text-gradient"
@@ -105,7 +115,7 @@
                   data-bs-target="#TermOfUseModal"
                   >ข้อตกลงในการใช้งาน</a
                 >
-              </label>
+              </label>      
             </div>
 
             <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%;">

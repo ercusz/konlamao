@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home w-80">
     <div class="row justify-content-md-center">
       <div class="col-sm-6">
         <div class="card mb-5 p-0 text-white bg-dark">
@@ -61,7 +61,7 @@
             <a href="#" class="btn bg-primary text-light mb-3">รายละเอียด</a>
             <a
               href="#"
-              class="btn bg-danger text-light mb-3 disabled"
+              class="btn bg-danger text-light mb-3 ms-2 disabled"
               aria-disabled="true"
               >จองทันที</a
             >

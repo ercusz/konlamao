@@ -32,7 +32,9 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  linkActiveClass: "active",
+  linkExactActiveClass: "exact-active",
 });
 
 export default router;

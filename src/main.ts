@@ -23,7 +23,6 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VCalendar from "v-calendar";
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 
