@@ -14,100 +14,58 @@
             >แล้วคุณล่ะรออะไรอยู่? เข้าร่วมกับเรา แล้วเมาไปด้วยกันสิ!</small
           >
 
-          <form @submit.prevent="signup">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'user']"
-              /></span>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Username"
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-                v-model="username"
-              />
-            </div>
+          <Form @submit="onSubmit" :validation-schema="schema">
+            <TextInput
+              name="username"
+              type="text"
+              icon="user"
+              placeholder="Username"
+              success-message="ชื่อนี้ดูเหมาะกับคุณดีนะ!"
+            />
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'envelope']"
-              /></span>
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Email"
-                aria-label="Email"
-                aria-describedby="basic-addon1"
-                v-model="email"
-              />
-            </div>
+            <TextInput
+              name="email"
+              type="email"
+              icon="envelope"
+              placeholder="Email"
+              success-message="เป็นอีเมล์ที่ดีนะ.. ไม่ต้องห่วงว่าเราจะส่งอีเมล์ขยะไปให้คุณ"
+            />
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'lock']"
-              /></span>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                aria-label="Password"
-                aria-describedby="basic-addon1"
-                v-model="password"
-                name="password"
-                data-bv-identical="true"
-                data-bv-identical-field="confirmPassword"
-                data-bv-identical-message="The password and its confirm are not the same"
-              />
-            </div>
+            <TextInput
+              name="password"
+              type="password"
+              icon="lock"
+              placeholder="Password"
+              success-message="เป็นรหัสผ่านที่ยอดเยี่ยม!"
+            />
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'lock']"
-              /></span>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Confirm Password"
-                aria-label="Confirm Password"
-                aria-describedby="basic-addon1"
-                v-model="confirmPassword"
-                name="confirmPassword"
-                data-bv-identical="true"
-                data-bv-identical-field="password"
-                data-bv-identical-message="The password and its confirm are not the same"
-              />
-            </div>
+            <TextInput
+              name="confirmpassword"
+              type="password"
+              icon="lock"
+              placeholder="Confirm Password"
+              success-message="หวังว่าคุณจะจำรหัสผ่านนี้ได้นะ"
+            />
 
-            <div class="mb-3">
-              <v-date-picker v-model="date">
-                <template v-slot="{ inputValue, inputEvents }">
-                  <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1"
-                      ><font-awesome-icon :icon="['fas', 'calendar-alt']"
-                    /></span>
-                    <input
-                      class="form-control"
-                      :value="inputValue"
-                      v-on="inputEvents"
-                      placeholder="Date of Birth"
-                      aria-label="Birthdate"
-                      aria-describedby="basic-addon1"
-                      required
-                    />
-                  </div>
-                </template>
-              </v-date-picker>
-            </div>
+            <TextInput
+              name="date"
+              type="date"
+              icon="calendar-alt"
+              placeholder="Date of Birth"
+              class="mb-5"
+            />
+   
 
             <div class="form-check">
-              <input
+              
+              <Field
+                name="terms"
                 class="form-check-input bg-danger"
                 type="checkbox"
                 id="flexCheckChecked"
-                required
+                value=false
               />
-              
+
               <label class="form-check-label" for="flexCheckChecked">
                 ฉันยอมรับ<a
                   class="fw-bold text-decoration-none text-danger text-gradient"
@@ -115,13 +73,15 @@
                   data-bs-target="#TermOfUseModal"
                   >ข้อตกลงในการใช้งาน</a
                 >
-              </label>      
+              </label>
+              
             </div>
+            <Error-Message class="text-danger" name="terms" style="font-size: 14px;"></Error-Message>
 
-            <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%;">
+            <button type="submit" class="submit-btn btn-dark mt-3 bg-danger" style="width:100%; height:5vh">
               สมัครสมาชิก
             </button>
-          </form>
+          </Form>
 
           <div class="text-center mt-3">
             <span>หรือสมัครสมาชิกด้วยโซเชียลมีเดีย</span>
@@ -203,40 +163,36 @@
 <script>
 import firebase from "firebase";
 import { db } from "../main";
-
-function _calculateAge(birthday) { // birthday is a date
-    const ageDifMs = Date.now() - birthday.getTime();
-    const ageDate = new Date(ageDifMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-};
+import { Form,Field, ErrorMessage } from "vee-validate";
+import * as Yup from "yup";
+import TextInput from "../components/TextInput.vue";
 
 export default {
-  
-  data() {
-    return {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      date: new Date(),
-    };
+  name: "App",
+  components: {
+    TextInput,
+    Form,
+    Field,
+    ErrorMessage
   },
-  methods: {
-    signup() {
-      if(_calculateAge(this.date) >= 20){
-        firebase
+
+  setup() { 
+    function onSubmit(values) {
+      
+      //alert(JSON.stringify(values, null, 2));
+      
+      firebase
           .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
+          .createUserWithEmailAndPassword(values.email, values.password)
           .then(() => {
             db.collection("users").doc(firebase.auth().currentUser.uid).set({
-                username: this.username,
-                birthDate: this.date,
-                createdDate: firebase.firestore.Timestamp.now(),
-                isStaff: false
+                username: values.username,
+                birthDate: new Date(values.date).setHours(0,0,0,0),
+                createdDate: firebase.firestore.Timestamp.now()
             })
             .then(() => {
                 alert('Successfully registered! Please login.');
-                this.$router.push("/login");
+                
             })
             .catch((error) => {
                 console.error("Error writing document: ", error);
@@ -244,16 +200,37 @@ export default {
           })
           .catch(error => {
             alert(error.message);
-          });
-      }
-      else{
-        alert('You\'re not allowed to use the website.');
-      }
-      
-    }
-  }
-};
+      });
 
+    }
+
+    // Using yup to generate a validation schema
+    // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
+    const schema = Yup.object().shape({
+      username: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().min(8).required(),
+      confirmpassword: Yup.string()
+        .required()
+        .oneOf([Yup.ref("password")], "รหัสผ่านไม่ตรงกัน"),
+      date: Yup.date()
+        .required().nullable().typeError("กรุณากรอกวันเกิด")
+        .test("age", "อายุคุณยังไม่ถึงเกณฑ์ขั้นต่ำ", function(birthdate) {
+          const cutoff = new Date();
+          cutoff.setFullYear(cutoff.getFullYear() - 20);      
+          return birthdate <= cutoff;
+        }),
+      terms: Yup.string()
+                .required('กรุณาอ่านและยอมรับข้อตกลงในการใช้งาน')
+    });
+
+    return {
+      onSubmit,
+      schema,
+    };
+  },
+  
+}
 
 
 </script>
@@ -338,4 +315,17 @@ export default {
 .modal-header {
   background-color: whitesmoke;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #0071fe;
+  --error-color: #f23648;
+  --error-bg-color: #fddfe2;
+  --success-color: #21a67a;
+  --success-bg-color: #e0eee4;
+}
+
 </style>

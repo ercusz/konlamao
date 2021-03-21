@@ -41,7 +41,7 @@
 
   <main class="px-3">
     <!-- Router view -->
-    <div class="container pt-5 pb-5">
+    <div class="container pt-5 pb-5" >
       <router-view></router-view>
     </div>
   </main>
@@ -68,6 +68,9 @@ export default {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
   url(https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D),
   linear-gradient(#4e4376, #2b5876);
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color:rgba(122, 22, 22, 0);
   color: white;
 }
 
