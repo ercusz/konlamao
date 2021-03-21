@@ -64,16 +64,6 @@ export default {
 <style>
 @import url(https://fonts.googleapis.com/css?family=Taviraj);
 
-#app{
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-  url(https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D),
-  linear-gradient(#4e4376, #2b5876);
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-color:rgba(122, 22, 22, 0);
-  color: white;
-}
-
 html {  
   height: 100%;
 }
@@ -95,6 +85,7 @@ html {
  */
 
 body {
+  height: 100%;
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
@@ -134,4 +125,8 @@ a {
   border-bottom-color: #fff;
 }
 
+.input-group, .input-group:focus, .input-group-text, .input-group-text:focus, input, input:focus{
+  background-color: white;
+  border-radius: .25rem;
+}
 </style>

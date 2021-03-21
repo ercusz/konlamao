@@ -4,9 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" type="image/png" href="./public/favicon.png">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <title>คนละเมา | konlamao</title>
     <!--<%= htmlWebpackPlugin.options.title %>-->
+    <style>
+      body{
+      background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+      url(https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D),
+      linear-gradient(#4e4376, #2b5876);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      height:100%;
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -16,3 +29,5 @@
     <!-- built files will be auto injected -->
   </body>
 </html>
+
+

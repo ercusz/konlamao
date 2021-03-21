@@ -16,11 +16,10 @@
       aria-describedby="basic-addon1"
       class="form-control"
     />
-
-    <p class="help-message" v-show="errorMessage || meta.valid">
-      {{ errorMessage || successMessage }}
-    </p>
   </div>
+  <p class="help-message" :class="{ 'has-error': !!errorMessage, success: meta.valid }" v-show="errorMessage || meta.valid">
+    {{errorMessage || successMessage }}
+  </p>
 </template>
 
 <script>
@@ -80,33 +79,36 @@ export default {
 <style  scoped>
 .TextInput {
   position: relative;
-  margin-bottom: calc(1em * 1.5);
+  margin-bottom: 1.5vh;
   width: 100%;
+}
+
+.TextInput.has-error, .TextInput.success {
+  margin-bottom: 0;
 }
 
 input:focus {
   border-color: var(--primary-color);
+  background-color: white;
+  border-radius: .25rem;
 }
 
 .help-message {
-  position: absolute;
   bottom: calc(-1.5 * 1em);
   left: 0;
-  margin: 0;
-  
+  margin: 0;  
 }
 
 .TextInput.has-error input {
   background-color: var(--error-bg-color);
   color: var(--error-color);
-  
 }
 
 .TextInput.has-error input:focus {
   border-color: var(--error-color);
 }
 
-.TextInput.has-error .help-message {
+.TextInput.has-error, .help-message.has-error{
   color: var(--error-color);
   font-size: 1.5vh;
 }
@@ -120,7 +122,7 @@ input:focus {
   border-color: var(--success-color);
 }
 
-.TextInput.success .help-message {
+.TextInput.success .help-message, .help-message.success{
   color: var(--success-color);
 }
 </style>

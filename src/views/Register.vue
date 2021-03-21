@@ -2,7 +2,7 @@
   <div class="container mt-5 mb-5">
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-7">
-        <div class="card px-5 py-5 text-white bg-dark">
+        <div class="card px-4 py-5 text-white bg-dark">
           <span class="circle bg-danger bg-gradient"
             ><font-awesome-icon :icon="['fas', 'check']" style="color: white"
           /></span>
@@ -78,7 +78,7 @@
             </div>
             <Error-Message class="text-danger" name="terms" style="font-size: 14px;"></Error-Message>
 
-            <button type="submit" class="submit-btn btn-dark mt-3 bg-danger" style="width:100%; height:5vh">
+            <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%; height:5vh;">
               สมัครสมาชิก
             </button>
           </Form>
@@ -272,16 +272,8 @@ export default {
 }
 
 .form-control {
-  background-color: #1c1e21;
   text-indent: 5px;
   font-size: 15px;
-}
-
-.form-control:focus {
-  background-color: #25272a;
-  box-shadow: none;
-  color: black;
-  border-color: #7f6ce7;
 }
 
 .form-check-label {
@@ -295,8 +287,8 @@ export default {
 }
 
 .social {
-  height: 50px;
-  width: 50px;
+  height: 5vh;
+  width: 5vh;
   display: flex;
   justify-content: center;
   align-items: center;

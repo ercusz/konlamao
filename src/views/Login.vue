@@ -2,7 +2,7 @@
   <div class="container mt-5 mb-5">
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-md-6">
-        <div class="card px-5 py-5 text-white bg-dark">
+        <div class="card px-4 py-5 text-white bg-dark">
           <span class="circle bg-danger bg-gradient"
             ><font-awesome-icon :icon="['fas', 'check']" style="color: white"
           /></span>
@@ -17,7 +17,7 @@
           <form @submit.prevent="login">
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'user']"
+                ><font-awesome-icon :icon="['fas', 'envelope']"
               /></span>
               <input
                 type="email"
@@ -123,3 +123,9 @@ export default {
   }
 };
 </script>
+
+<style>
+  .input-group{
+    border-radius: .25rem;
+  }
+</style>
