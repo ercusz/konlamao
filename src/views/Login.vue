@@ -14,34 +14,20 @@
             consectetur, adipisci velit..."</small
           >
 
-          <form @submit.prevent="login">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'envelope']"
-              /></span>
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Email"
-                aria-label="Email"
-                aria-describedby="basic-addon1"
-                v-model="email"
-              />
-            </div>
+          <Form @submit="onSubmit" :validation-schema="schema">
+            <TextInput
+              name="email"
+              type="email"
+              icon="envelope"
+              placeholder="Email"
+            />
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1"
-                ><font-awesome-icon :icon="['fas', 'lock']"
-              /></span>
-              <input
-                type="password"
-                class="form-control"
-                placeholder="Password"
-                aria-label="Password"
-                aria-describedby="basic-addon1"
-                v-model="password"
-              />
-            </div>
+            <TextInput
+              name="password"
+              type="password"
+              icon="lock"
+              placeholder="Password"
+            />
 
             <div class="form-check">
               <input
@@ -58,7 +44,7 @@
             <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%;">
               เข้าสู่ระบบ
             </button>
-          </form>
+          </Form>
 
           <div class="text-center mt-3">
             <span>หรือลงชื่อเข้าใช้ด้วยโซเชียลมีเดีย</span>
@@ -100,21 +86,36 @@
 <script>
 import firebase from "firebase";
 import { db } from "../main";
+import { Form } from "vee-validate";
+import * as Yup from "yup";
+import TextInput from "../components/TextInput.vue";
+
 export default {
-  data() {
+  name: "App",
+  components: {
+    TextInput,
+    Form
+  },
+  setup() { 
+    // Using yup to generate a validation schema
+    // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
+    const schema = Yup.object().shape({
+      email: Yup.string().email().required(),
+      password: Yup.string().min(8).required(),
+    });
+
     return {
-      email: "",
-      password: ""
+      schema,
     };
   },
   methods: {
-    login() {
+    onSubmit(schema) {
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
+        .signInWithEmailAndPassword(schema.email, schema.password)
         .then(() => {
           alert("Successfully logged in");
-          this.$router.push("/home");
+          this.$router.push("/");
         })
         .catch(error => {
           alert(error.message);

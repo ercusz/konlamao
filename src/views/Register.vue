@@ -175,35 +175,7 @@ export default {
     Field,
     ErrorMessage
   },
-
   setup() { 
-    function onSubmit(values) {
-      
-      //alert(JSON.stringify(values, null, 2));
-      
-      firebase
-          .auth()
-          .createUserWithEmailAndPassword(values.email, values.password)
-          .then(() => {
-            db.collection("users").doc(firebase.auth().currentUser.uid).set({
-                username: values.username,
-                birthDate: new Date(values.date).setHours(0,0,0,0),
-                createdDate: firebase.firestore.Timestamp.now()
-            })
-            .then(() => {
-                alert('Successfully registered! Please login.');
-                
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });          
-          })
-          .catch(error => {
-            alert(error.message);
-      });
-
-    }
-
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
@@ -225,10 +197,36 @@ export default {
     });
 
     return {
-      onSubmit,
       schema,
     };
   },
+  methods: {
+      onSubmit(schema) {
+      
+      //alert(JSON.stringify(values, null, 2));
+      firebase
+          .auth()
+          .createUserWithEmailAndPassword(schema.email, schema.password)
+          .then(() => {
+            db.collection("users").doc(firebase.auth().currentUser.uid).set({
+                username: schema.username,
+                birthDate: new Date(schema.date).setHours(0,0,0,0),
+                createdDate: firebase.firestore.Timestamp.now()
+            })
+            .then(() => {
+                alert('Successfully registered! Please login.');
+                this.$router.push("/login");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });          
+          })
+          .catch(error => {
+            alert(error.message);
+      });
+
+    }
+  }
   
 }
 

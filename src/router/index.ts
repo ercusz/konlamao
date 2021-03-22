@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Home from "@/views/Home.vue";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 
@@ -31,10 +31,11 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
   linkExactActiveClass: "exact-active",
 });
+// we could also use this.$route or route = useRoute() (inside a setup)
 
 export default router;
