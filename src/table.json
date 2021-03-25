@@ -1,0 +1,27 @@
+{
+    "floor": [
+        { "id": "first" },
+        { "id": "second"}
+    ],
+    "first": [
+        { "id": "T1", "available": true, "price": 300},
+        { "id": "T2", "available": true, "price": 300},
+        { "id": "T3", "available": false, "price": 300},
+        { "id": "T4", "available": true, "price": 300},
+        { "id": "T5", "available": true, "price": 300},
+        { "id": "T6", "available": false, "price": 300},
+        { "id": "T7", "available": true, "price": 300},
+        { "id": "T8", "available": true, "price": 300},
+        { "id": "T9", "available": false, "price": 300},
+        { "id": "T10", "available": true, "price": 300},
+        { "id": "T11", "available": true, "price": 300},
+        { "id": "T12", "available": true, "price": 300},
+        { "id": "T13", "available": true, "price": 300},
+        { "id": "T14", "available": true, "price": 300},
+        { "id": "T15", "available": true, "price": 300}
+    ],
+    "second": [
+        { "id": "T16", "available": true, "price": 1200},
+        { "id": "T17", "available": false, "price": 300}
+    ]
+}

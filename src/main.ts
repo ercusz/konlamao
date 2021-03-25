@@ -13,7 +13,8 @@ import {
   faUser,
   faLock,
   faCalendarAlt,
-  faCheck
+  faCheck,
+  faGuitar
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGoogle,
@@ -49,7 +50,8 @@ library.add(
   faFacebook,
   faTwitter,
   faLinkedin,
-  faCheck
+  faCheck,
+  faGuitar
 );
 
 createApp(App)
