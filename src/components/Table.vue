@@ -1,7 +1,6 @@
 <template>
     <div class="text-white">
 
-        
         <table style="width:100%;" v-if="floorId == 'first'">
             <colgroup>
                 <col style="width:12%;" />
@@ -536,7 +535,7 @@ td{
 .btn-danger{
     cursor: not-allowed;
 }
-button
+button .roomTable
 {
    display: inline-block;
    width: 100%;       /* set to 100% */
