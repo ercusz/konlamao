@@ -29,7 +29,7 @@
             </tr>
             <tr> <!-- space -->
                 <td colspan="5"></td>
-                <td colspan="4"><h6 class="title">{{'You\'re in ' + floorId + ' floor.'}} </h6></td>
+                <td colspan="4"><h6 class="title">{{'You\'re on the ' + floorId + ' floor.'}} </h6></td>
             </tr>
             <tr>
                 <td>
@@ -277,7 +277,7 @@
             </tr>
             <tr> <!-- space -->
                 <td colspan="5"></td>
-                <td colspan="4"><h6 class="title">{{'You\'re in ' + floorId + ' floor.'}} </h6></td>
+                <td colspan="4"><h6 class="title">{{'You\'re on the ' + floorId + ' floor.'}} </h6></td>
             </tr>
             <tr>
                 <td>
