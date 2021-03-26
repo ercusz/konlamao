@@ -1,6 +1,6 @@
 <template>
     <div class="text-white">
-
+        <!--First Floor-->
         <table style="width:100%;" v-if="floorId == 'first'">
             <colgroup>
                 <col style="width:12%;" />
@@ -16,13 +16,19 @@
             </colgroup>
             <tr rowspan="2">
                 <td colspan="5" class="bg-dark border-dark border-3">
-                    STAGE <font-awesome-icon icon="guitar" style="color: white"/>                  
+                    <h3>STAGE <font-awesome-icon icon="guitar" style="color: white"/></h3>                
                 </td>
                 <td class="gap border-dark border-3" rowspan="7"></td>
-                <td colspan="4"></td>
+                <td class="p-3 bg-dark" colspan="4">
+                    <div class="d-grid gap-2 d-md-block">
+                        <button class="btn-danger btn-gradient mb-1 rounded shadow-lg">กำลังเลือก</button><br> 
+                        <button class="btn-dark btn-gradient mb-1 rounded shadow-lg">ว่าง</button><br>
+                        <button class="btn-secondary btn-gradient mb-1 rounded shadow-lg">ถูกจองแล้ว</button><br>
+                    </div>
+                </td>
             </tr>
             <tr> <!-- space -->
-                <td colspan="5"><p>{{this.selectedTable}}</p></td>
+                <td colspan="5"></td>
                 <td colspan="4"><h6 class="title">{{'You\'re in ' + floorId + ' floor.'}} </h6></td>
             </tr>
             <tr>
@@ -241,6 +247,8 @@
                 </td>
             </tr>
         </table>
+
+        <!--Second Floor-->
         <table style="width:100%;" v-else-if="floorId == 'second'">
             <colgroup>
                 <col style="width:12%;" />
@@ -256,13 +264,19 @@
             </colgroup>
             <tr rowspan="2">
                 <td colspan="5" class="bg-dark border-dark border-3">
-                    STAGE <font-awesome-icon icon="guitar" style="color: white"/>                  
+                    <h3>STAGE <font-awesome-icon icon="guitar" style="color: white"/></h3>                  
                 </td>
                 <td class="gap border-dark border-3" rowspan="17"></td>
-                <td colspan="4"></td>
+                <td class="p-3 bg-dark" colspan="4">
+                    <div class="d-grid d-md-block">
+                        <button class="btn-danger btn-gradient mb-1 rounded shadow-lg">กำลังเลือก</button><br> 
+                        <button class="btn-dark btn-gradient mb-1 rounded shadow-lg">ว่าง</button><br>
+                        <button class="btn-secondary btn-gradient mb-1 rounded shadow-lg">ถูกจองแล้ว</button><br>
+                    </div>
+                </td>
             </tr>
             <tr> <!-- space -->
-                <td colspan="5"><p>{{this.selectedTable}}</p></td>
+                <td colspan="5"></td>
                 <td colspan="4"><h6 class="title">{{'You\'re in ' + floorId + ' floor.'}} </h6></td>
             </tr>
             <tr>
@@ -477,8 +491,8 @@ export default {
             const ids = this.selectedTable.map(t => t.id)
             const idx = ids.indexOf(table.id)
             return [
-                'td roomTable text-light',
-                { 'btn-danger': !table.available, 'btn-primary': idx != -1 }
+                'td roomTable text-light bg-gradient',
+                { 'btn-secondary': !table.available, 'btn-danger checked': idx != -1 }
             ]
         },
         chooseTable(table){
@@ -526,21 +540,20 @@ td{
 .roomTable{
     text-align: center;
     color: white;
-    background-color: black;
-    border-radius: 10px;
+    background-color: black;    
 }
 .roomTable:hover{
     background-color: goldenrod;
 }
-.btn-danger{
+.btn-secondary{
     cursor: not-allowed;
 }
-button .roomTable
-{
+button.roomTable, button:disabled{
    display: inline-block;
    width: 100%;       /* set to 100% */
    height: 100%;      /* set to 100% */
    font-size: 100%;
    text-align: center;
+   border-radius: 5px;
 }
 </style>
