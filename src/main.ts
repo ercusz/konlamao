@@ -14,7 +14,9 @@ import {
   faLock,
   faCalendarAlt,
   faCheck,
-  faGuitar
+  faGuitar,
+  faToilet,
+  faCocktail
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGoogle,
@@ -39,7 +41,6 @@ const firebaseConfig = {
 
 export const db = firebase.initializeApp(firebaseConfig).firestore();
 
-
 library.add(
   faGlassCheers,
   faEnvelope,
@@ -51,7 +52,9 @@ library.add(
   faTwitter,
   faLinkedin,
   faCheck,
-  faGuitar
+  faGuitar,
+  faToilet,
+  faCocktail
 );
 
 createApp(App)

@@ -1,5 +1,6 @@
 <template>
   <div class="home w-80">
+    <div class="container text-light mb-5"><h1>สวัสดี, {{ getUsername() }}</h1><h4>{{ getQuotes() }}</h4></div>
     <div class="row justify-content-md-center">
       <div class="col-sm-6">
         <div class="card mb-5 p-0 text-white bg-dark">
@@ -75,10 +76,44 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { Options, Vue } from "vue-class-component";
+import firebase from "firebase";
+import { db } from "../main"
 
-export default class Home extends Vue {}
+export default {
+  props: ["username"],
+  data() {
+    return{
+      quotes: []
+    }
+  },
+  created(){
+    this.loadQuotes()
+  },
+  methods: {
+    loadQuotes(){
+      firebase.firestore().collection('Quotes').get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((q) => {
+            const quote = q.data()
+            //console.log(quote)
+            this.quotes.push(quote.desc)            
+        })     
+      })
+    },
+    getQuotes() {
+      return this.quotes[Math.floor((Math.random() * this.quotes.length)+1)]
+    },
+    getUsername(){
+      if(this.username==null){
+        return "Guest"
+      }else{
+        return this.username
+      }
+    }
+  }
+}
 </script>
 
 <style>

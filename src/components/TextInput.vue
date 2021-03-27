@@ -3,9 +3,9 @@
     class="TextInput input-group"
     :class="{ 'has-error': !!errorMessage, success: meta.valid }"
   >
-  <span class="input-group-text" id="basic-addon1"
-            ><font-awesome-icon :icon="icon"
-              /></span>
+    <span class="input-group-text" id="basic-addon1"
+      ><font-awesome-icon :icon="icon"
+    /></span>
     <input
       :name="name"
       :type="type"
@@ -17,8 +17,12 @@
       class="form-control"
     />
   </div>
-  <p class="help-message" :class="{ 'has-error': !!errorMessage, success: meta.valid }" v-show="errorMessage || meta.valid">
-    {{errorMessage || successMessage }}
+  <p
+    class="help-message"
+    :class="{ 'has-error': !!errorMessage, success: meta.valid }"
+    v-show="errorMessage || meta.valid"
+  >
+    {{ errorMessage || successMessage }}
   </p>
 </template>
 
@@ -29,28 +33,28 @@ export default {
   props: {
     type: {
       type: String,
-      default: "text",
+      default: "text"
     },
     value: {
       type: String,
-      default: "",
+      default: ""
     },
     name: {
       type: String,
-      required: true,
+      required: true
     },
     icon: {
       type: String,
-      required: true,
+      required: true
     },
     placeholder: {
       type: String,
-      default: "",
+      default: ""
     },
     successMessage: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   setup(props) {
     // we don't provide any rules here because we are using form-level validation
@@ -60,9 +64,9 @@ export default {
       errorMessage,
       handleBlur,
       handleChange,
-      meta,
+      meta
     } = useField(props.name, undefined, {
-      initialValue: props.value,
+      initialValue: props.value
     });
 
     return {
@@ -70,33 +74,34 @@ export default {
       handleBlur,
       errorMessage,
       inputValue,
-      meta,
+      meta
     };
-  },
+  }
 };
 </script>
 
-<style  scoped>
+<style scoped>
 .TextInput {
   position: relative;
   margin-bottom: 1.5vh;
   width: 100%;
 }
 
-.TextInput.has-error, .TextInput.success {
+.TextInput.has-error,
+.TextInput.success {
   margin-bottom: 0;
 }
 
 input:focus {
   border-color: var(--primary-color);
   background-color: white;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .help-message {
   bottom: calc(-1.5 * 1em);
   left: 0;
-  margin: 0;  
+  margin: 0;
 }
 
 .TextInput.has-error input {
@@ -108,7 +113,8 @@ input:focus {
   border-color: var(--error-color);
 }
 
-.TextInput.has-error, .help-message.has-error{
+.TextInput.has-error,
+.help-message.has-error {
   color: var(--error-color);
   font-size: 1.5vh;
 }
@@ -122,7 +128,8 @@ input:focus {
   border-color: var(--success-color);
 }
 
-.TextInput.success .help-message, .help-message.success{
+.TextInput.success .help-message,
+.help-message.success {
   color: var(--success-color);
 }
 </style>

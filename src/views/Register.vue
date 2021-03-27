@@ -54,16 +54,14 @@
               placeholder="Date of Birth"
               class="mb-5"
             />
-   
 
-            <div class="form-check">
-              
+            <div class="form-check mb-3">
               <Field
                 name="terms"
                 class="form-check-input bg-danger"
                 type="checkbox"
                 id="flexCheckChecked"
-                value=false
+                value="false"
               />
 
               <label class="form-check-label" for="flexCheckChecked">
@@ -74,45 +72,30 @@
                   >ข้อตกลงในการใช้งาน</a
                 >
               </label>
-              
             </div>
-            <Error-Message class="text-danger" name="terms" style="font-size: 14px;"></Error-Message>
+            <Error-Message
+              class="text-danger"
+              name="terms"
+              style="font-size: 14px;"
+            ></Error-Message>
 
-            <button type="submit" class="btn btn-dark mt-3 bg-danger" style="width:100%; height:5vh;">
+            <button
+              type="submit"
+              class="btn btn-dark mt-3 bg-danger"
+              style="width:100%; height:5vh;"
+            >
               สมัครสมาชิก
             </button>
           </Form>
 
-          <div class="text-center mt-3">
-            <span>หรือสมัครสมาชิกด้วยโซเชียลมีเดีย</span>
-          </div>
-
-          <div class="d-flex justify-content-center mt-4">
-            <span class="social"
-              ><font-awesome-icon :icon="['fab', 'google']" class="social-icon"
-            /></span>
-            <span class="social"
-              ><font-awesome-icon
-                :icon="['fab', 'facebook']"
-                class="social-icon"
-            /></span>
-            <span class="social"
-              ><font-awesome-icon :icon="['fab', 'twitter']" class="social-icon"
-            /></span>
-            <span class="social"
-              ><font-awesome-icon
-                :icon="['fab', 'linkedin']"
-                class="social-icon"
-            /></span>
-          </div>
-
           <div class="text-center mt-4">
             <span>เป็นสมาชิกอยู่แล้ว? </span>
-            <a
+            <router-link
+              to="/login"
+              active-link="active"
               class="fw-bold text-decoration-none text-danger text-gradient"
-              href="#Login"
-              >เข้าสู่ระบบ</a
-            >
+              >เข้าสู่ระบบ
+            </router-link>
           </div>
 
           <!-- Modal -->
@@ -153,7 +136,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -163,7 +145,7 @@
 <script>
 import firebase from "firebase";
 import { db } from "../main";
-import { Form,Field, ErrorMessage } from "vee-validate";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import * as Yup from "yup";
 import TextInput from "../components/TextInput.vue";
 
@@ -175,62 +157,69 @@ export default {
     Field,
     ErrorMessage
   },
-  setup() { 
+  setup() {
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
       username: Yup.string().required(),
-      email: Yup.string().email().required(),
-      password: Yup.string().min(8).required(),
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string()
+        .min(8)
+        .required(),
       confirmpassword: Yup.string()
         .required()
         .oneOf([Yup.ref("password")], "รหัสผ่านไม่ตรงกัน"),
       date: Yup.date()
-        .required().nullable().typeError("กรุณากรอกวันเกิด")
+        .required()
+        .nullable()
+        .typeError("กรุณากรอกวันเกิด")
         .test("age", "อายุคุณยังไม่ถึงเกณฑ์ขั้นต่ำ", function(birthdate) {
           const cutoff = new Date();
-          cutoff.setFullYear(cutoff.getFullYear() - 20);      
+          cutoff.setFullYear(cutoff.getFullYear() - 20);
           return birthdate <= cutoff;
         }),
-      terms: Yup.string()
-                .required('กรุณาอ่านและยอมรับข้อตกลงในการใช้งาน')
+      terms: Yup.string().required("กรุณาอ่านและยอมรับข้อตกลงในการใช้งาน")
     });
 
     return {
-      schema,
+      schema
     };
   },
   methods: {
-      onSubmit(schema) {
-      
+    onSubmit(schema) {
       //alert(JSON.stringify(values, null, 2));
       firebase
-          .auth()
-          .createUserWithEmailAndPassword(schema.email, schema.password)
-          .then(() => {
-            db.collection("users").doc(firebase.auth().currentUser.uid).set({
-                username: schema.username,
-                birthDate: new Date(schema.date).setHours(0,0,0,0),
-                createdDate: firebase.firestore.Timestamp.now()
-            })
-            .then(() => {
-                alert('Successfully registered! Please login.');
-                this.$router.push("/login");
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });          
-          })
-          .catch(error => {
-            alert(error.message);
-      });
-
+        .auth()
+        .createUserWithEmailAndPassword(schema.email, schema.password)
+        .then((data) => {
+          data.user
+            .updateProfile({
+              displayName: schema.username
+            }).then(() => {
+              db.collection("users")
+                .doc(firebase.auth().currentUser.uid)
+                .set({
+                  username: schema.username,
+                  birthDate: new Date(schema.date).setHours(0, 0, 0, 0),
+                  createdDate: firebase.firestore.Timestamp.now()
+                })
+                .then(() => {
+                  alert("Successfully registered! Please login.");
+                  this.$router.push("/login");
+                })
+                .catch(error => {
+                  console.error("Error writing document: ", error);
+                });
+            });
+        })
+        .catch(error => {
+          alert(error.message);
+        });
     }
   }
-  
-}
-
-
+};
 </script>
 
 <style>
@@ -317,5 +306,4 @@ export default {
   --success-color: #21a67a;
   --success-bg-color: #e0eee4;
 }
-
 </style>
