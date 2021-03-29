@@ -64,7 +64,7 @@
                 value="false"
               />
 
-              <label class="form-check-label" for="flexCheckChecked">
+              <label class="form-check-label bt-3" for="flexCheckChecked">
                 ฉันยอมรับ<a
                   class="fw-bold text-decoration-none text-danger text-gradient"
                   data-bs-toggle="modal"
@@ -122,7 +122,7 @@
                   ></button>
                 </div>
                 <div class="modal-body text-dark">
-                  ...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...<br />...ทดสอบ...
+                  คนละเมา.com จัดทำขึ้นเพื่อการศึกษาเท่านั้น
                 </div>
                 <div class="modal-footer">
                   <button
@@ -189,7 +189,7 @@ export default {
   },
   methods: {
     onSubmit(schema) {
-      //alert(JSON.stringify(values, null, 2));
+
       firebase
         .auth()
         .createUserWithEmailAndPassword(schema.email, schema.password)
@@ -202,8 +202,10 @@ export default {
                 .doc(firebase.auth().currentUser.uid)
                 .set({
                   username: schema.username,
-                  birthDate: new Date(schema.date).setHours(0, 0, 0, 0),
-                  createdDate: firebase.firestore.Timestamp.now()
+                  birthDate: new Date(schema.date),
+                  createdDate: firebase.firestore.Timestamp.now(),
+                  phoneNumber: "",
+                  phoneVerified: false
                 })
                 .then(() => {
                   alert("Successfully registered! Please login.");

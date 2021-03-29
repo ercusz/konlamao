@@ -1,8 +1,44 @@
 <template>
-  <div class="box text-light">
+
+  <!-- Modal -->
+  <div class="modal fade" id="verifyPhone" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header bg-dark text-danger">
+          <h5 class="modal-title" id="staticBackdropLabel">ยืนยันเบอร์โทรศัพท์</h5>
+          <button ref="Close" type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h2>กรอกเบอร์โทรศัพท์เพื่อรับ OTP</h2>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">+66</span>
+            <input type="number" v-model="phNo" class="form-control" placeholder="กรอกเบอร์โทรศัพท์">
+            <button class="btn btn-dark bg-danger" id="sign-in-button" @click="sendOtp" aria-describedby="basic-addon1">รับ OTP</button>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">OTP</span>
+            <input type="number" v-model="otp" class="form-control" placeholder="กรอกรหัส OTP">
+            <button class="btn btn-dark bg-danger" id="sign-in-button" @click="verifyOtp" aria-describedby="basic-addon1">ยืนยัน OTP</button>
+          </div>
+          <div id="recaptcha-container"></div>
+          <button class="btn btn-dark bg-danger" @click="sendOtp()">ส่ง OTP ใหม่</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div v-if="this.verified === false" class="container">
+    <h3 class="title text-white">กรุณายืนยันเบอร์โทรศัพท์ก่อนจองโต๊ะ</h3>
+    <button type="button" class="btn btn-dark mt-3 bg-danger" data-bs-toggle="modal" data-bs-target="#verifyPhone">
+      ยืนยันเบอร์โทรศัพท์
+    </button>
+  </div>
+
+  <div v-else class="box text-light">
     <h3 class="title">Reservation System</h3>
     <floors @chooseFloor="handleChooseFloor" :floorId="floorId" />
     <div v-if="selectedTable.length > 0" class="mb-3">
+
       <transition name="fade">
         <div class="card card-body bg-dark text-white">
           <span class="circle bg-danger bg-gradient mb-2"
@@ -53,7 +89,11 @@ export default {
   data() {
     return {
       floorId: "",
-      selectedTable: []
+      selectedTable: [],
+      phNo: '',
+      appVerifier : '',
+      otp : '',
+      verified: false
     };
   },
   methods: {
@@ -84,10 +124,11 @@ export default {
       if(this.selectedTable[0].available === true){
         db.collection("reservedTables")
             .add({
-              uid: firebase.auth().currentUser.uid,
+              uid: db.doc('users/' + firebase.auth().currentUser.uid),
               reservedDate: firebase.firestore.Timestamp.now(),
               expireDate: new Date(firebase.firestore.Timestamp.now().toDate().setHours(19, 0, 0)),
-              table: db.doc('Tables/' + this.selectedTable[0].id)
+              table: db.doc('Tables/' + this.selectedTable[0].id),
+              isPaid: false
             })
             .then(() => {
               db.doc('Tables/' + this.selectedTable[0].id).update({
@@ -108,9 +149,88 @@ export default {
       }
       else{
        alert("เกิดข้อผิดพลาด โต๊ะถูกคนอื่นจองไปแล้ว!")
+      }      
+    },
+    sendOtp(){
+        if(this.phNo.length < 9){
+          alert('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง!');
+        }else{
+          //
+          const countryCode = '+66'
+          const phoneNumber = countryCode + this.phNo
+          //
+          const appVerifier = this.appVerifier
+          //
+          db.get
+          firebase.auth().currentUser.linkWithPhoneNumber(phoneNumber, appVerifier)
+          .then((confirmationResult) => {
+            // At this point SMS is sent. Ask user for code.
+            window.confirmationResult = confirmationResult;
+            alert('ส่ง OTP สำเร็จ กรุณาตรวจสอบข้อความในโทรศัพท์ของท่าน')
+          })
+          .then((result) => {
+            // Phone credential now linked to current user.
+            // User now can sign in with email/pass or phone.
+          })
+          .catch((error) => {
+            // Error occurred.
+          })
+        }
+      },
+      //
+      verifyOtp(){
+        if(this.phNo.length < 9 || this.otp.length != 6){
+          alert('กรุณากรอกเบอร์โทรศัพท์ หรือ OTP ให้ถูกต้อง!');
+        }else{
+          //
+          const code = this.otp
+          //
+          window.confirmationResult.confirm(code).then((result) => {
+            // User signed in successfully.
+            const user = result.user;
+            // ...
+            db.collection("users")
+                .doc(firebase.auth().currentUser.uid)
+                .update({'phoneNumber': this.phNo, 'phoneVerified': true});
+            this.verified = true
+            this.$refs.Close.click();
+          }).catch((error) => {
+            // User couldn't sign in (bad verification code?)
+            // ...
+            console.log(error)
+          });
+        }
+      },
+      initReCaptcha(){
+        setTimeout(()=>{
+          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': function(response) {
+              // reCAPTCHA solved, allow signInWithPhoneNumber.
+              // ...
+            },
+            'expired-callback': function() {
+              // Response expired. Ask user to solve reCAPTCHA again.
+              // ...
+            }
+          });
+          //
+          this.appVerifier =  window.recaptchaVerifier
+        },1000)
       }
-      
+
+    },
+    created(){
+      this.initReCaptcha()
+      db.collection("users").doc(firebase.auth().currentUser.uid)
+      .get().then(res => {
+        this.verified = res.data().phoneVerified
+        if(res.data().phoneVerified != true){
+          this.verified = false
+        }
+      }).catch((error) => {
+        this.verified = false
+      });
     }
   }
-};
 </script>

@@ -27,7 +27,7 @@
             >
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <li class="nav-item" v-if="this.user!=null">
                   <router-link
                     to="/"
                     active-link="active"
@@ -71,7 +71,11 @@
                     {{this.username}}
                   </button>
                   <ul v-if="this.user!=null" class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenu2">
-                    <li><button class="dropdown-item" type="button">{{this.user.email}}</button></li>
+                    <li>
+                      <button class="dropdown-item" type="button">
+                      <router-link to="/history" style="text-decoration:none; color:white; font-weight:bold">ประวัติการจอง</router-link>
+                      </button>
+                    </li>
                     <li><button class="dropdown-item" type="button" @click="logOut()">ออกจากระบบ</button></li>
                   </ul>
                 </div>
