@@ -71,6 +71,11 @@
                     {{this.username}}
                   </button>
                   <ul v-if="this.user!=null" class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenu2">
+                    <li v-if="this.isAdmin">
+                      <button class="dropdown-item" type="button">
+                      <router-link to="/admin" class="text-danger" style="text-decoration:none; font-weight:bold">ระบบจัดการข้อมูล</router-link>
+                      </button>
+                    </li>
                     <li>
                       <button class="dropdown-item" type="button">
                       <router-link to="/history" style="text-decoration:none; color:white; font-weight:bold">ประวัติการจอง</router-link>
@@ -109,7 +114,8 @@ export default {
   data () {
     return {
       user: null,
-      username: null
+      username: null,
+      isAdmin: false
     }
   },
   created() {
@@ -136,6 +142,7 @@ export default {
         .get().then((doc) => {
             if (doc.exists) {
                 this.username = doc.data().username
+                this.isAdmin = doc.data().isAdmin
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -146,7 +153,7 @@ export default {
       }
     },
     getFirstChar(){
-      if(this.user!=null){
+      if(this.username!=null && typeof this.username !== 'undefined'){
         return this.username.substring(0, 1)
       }
     }

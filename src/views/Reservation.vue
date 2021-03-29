@@ -34,7 +34,7 @@
     </button>
   </div>
 
-  <div v-else class="box text-light">
+  <div v-if="this.verified === true && timeCheck() === true" class="box text-light">
     <h3 class="title">Reservation System</h3>
     <floors @chooseFloor="handleChooseFloor" :floorId="floorId" />
     <div v-if="selectedTable.length > 0" class="mb-3">
@@ -50,6 +50,7 @@
             >
           </h4>
           ค่าเปิดโต๊ะ {{ selectedTable[0].price }} บาท (รวมเครื่องดื่ม🍺)
+          <h6 class="text-secondary"><br>หากคุณไม่ชำระเงินค่าจองโต๊ะก่อน 19:00 น.<br>โต๊ะของคุณจะหลุดจองทันที</h6>
           <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             <button
               class="btn-sm btn-danger btn-gradient me-md-1"
@@ -74,6 +75,9 @@
       @chooseTable="handleChooseTable"
       :selectedTable="selectedTable"
     />
+  </div>
+  <div v-else>
+    <h1 class="text-white text-center">หมดเวลาในการจองโต๊ะ<br>กรุณาลองใหม่อีกครั้งในช่วงเวลา 00:00 น. จนถึง 19:00 น.</h1>
   </div>
 </template>
 
@@ -122,13 +126,13 @@ export default {
     },
     confirmReservation(){
       if(this.selectedTable[0].available === true){
-        db.collection("reservedTables")
+        db.collection("invoices")
             .add({
               uid: db.doc('users/' + firebase.auth().currentUser.uid),
               reservedDate: firebase.firestore.Timestamp.now(),
               expireDate: new Date(firebase.firestore.Timestamp.now().toDate().setHours(19, 0, 0)),
               table: db.doc('Tables/' + this.selectedTable[0].id),
-              isPaid: false
+              status: db.doc('invoiceStatus/' + '0')
             })
             .then(() => {
               db.doc('Tables/' + this.selectedTable[0].id).update({
@@ -217,10 +221,23 @@ export default {
           //
           this.appVerifier =  window.recaptchaVerifier
         },1000)
+      },
+      timeCheck(){
+        const now = new Date(firebase.firestore.Timestamp.now().seconds).getTime()
+        //const now = new Date(firebase.firestore.Timestamp.now().seconds).setHours(22, 0, 0) //for testing
+        const timeClose = new Date(firebase.firestore.Timestamp.now().seconds).setHours(19, 0, 0)
+        const diff = timeClose - now
+        if(diff < 1){
+          return false
+        }
+        else{
+          return true
+        }
       }
 
     },
     created(){
+      this.timeCheck()
       this.initReCaptcha()
       db.collection("users").doc(firebase.auth().currentUser.uid)
       .get().then(res => {

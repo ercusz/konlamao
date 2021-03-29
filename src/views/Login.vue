@@ -89,7 +89,7 @@ export default {
         .signInWithEmailAndPassword(schema.email, schema.password)
         .then(() => {
           alert("Successfully logged in");
-          this.$router.push("/");
+          this.$router.push({name:'Home'});
         })
         .catch(error => {
           alert(error.message);

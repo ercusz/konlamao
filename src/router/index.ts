@@ -5,6 +5,7 @@ import Login from "@/views/Login.vue";
 import Reservation from "@/views/Reservation.vue";
 import History from "@/views/History.vue";
 import firebase from "firebase/app";
+import Admin from "@/views/Admin.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,6 +47,14 @@ const routes: Array<RouteRecordRaw> = [
     path: "/history",
     name: "history",
     component: History,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: Admin,
     meta: {
       requiresAuth: true
     }

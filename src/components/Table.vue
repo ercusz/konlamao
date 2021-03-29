@@ -581,13 +581,15 @@ export default {
   },
   methods: {
     className(table) {
-      //console.log(table)
-      const ids = this.selectedTable.map(t => t.id);
-      const idx = ids.indexOf(table.id);
-      return [
-        "td roomTable text-light bg-gradient",
-        { "btn-secondary": !table.available, "btn-danger checked": idx != -1 }
-      ];
+      if(typeof table !== 'undefined'){
+        //console.log(table)
+        const ids = this.selectedTable.map(t => t.id);
+        const idx = ids.indexOf(table.id);
+        return [
+          "td roomTable text-light bg-gradient",
+          { "btn-secondary": !table.available, "btn-danger checked": idx != -1 }
+        ];
+      }
     },
     chooseTable(table) {
       return [this.$emit("chooseTable", table)];
@@ -647,7 +649,7 @@ button:disabled {
   display: inline-block;
   width: 100%; /* set to 100% */
   height: 100%; /* set to 100% */
-  font-size: 100%;
+  font-size: 2vw;
   text-align: center;
   border-radius: 5px;
 }

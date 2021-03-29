@@ -3,26 +3,29 @@
       <h2 class="text-white text-center">คุณไม่มีรายการจองโต๊ะล่าสุด</h2>
     </div>
     <div v-else>
-      <div class="card text-white bg-dark mb-3 shadow-lg" v-for="invoice in invoices" :key="invoice">
+      <div class="card text-white bg-dark mb-3 shadow-lg" v-for="invoice in orderStatus" :key="invoice">
           <div class="card-header" >
               รหัสการจอง <strong class="text-danger">{{ invoice.id}}</strong>
           </div>
           <div class="card-body">
               <h5 class="card-title">รหัสโต๊ะ: {{ invoice.table.id }}</h5>
               <p class="card-text">ราคา {{ invoice.table.price }} บาท</p>
+              <p class="card-text">
+                สถานะ: <label :id="'invoiceState_' + invoice.status.id">{{ invoice.status.desc }}</label> 
+              </p>
               <button
                 class="btn btn-dark mt-3 bg-secondary" 
                 data-bs-toggle="modal" 
                 data-bs-target="#cancelModal"
-                @click="this.currentCancel = invoice"                
+                @click="this.currentCancel = invoice"
+                v-if="invoice.status.id === '0'"           
               >
               ยกเลิกการจอง
               </button>
           </div>
           <div class="card-footer text-muted">
-              <small class="text-danger">**กรุณาจ่ายเงินภายใน {{ getTimeDiff(invoice) }}**</small>
-          </div>
-          
+              <small class="text-danger" v-if="invoice.status.id === '0'" >**กรุณาจ่ายเงินภายใน {{ getTimeDiff(invoice) }}**</small>
+          </div>          
       </div>
     </div>
 
@@ -60,7 +63,7 @@ export default {
     };
   },
   created(){
-    db.collection('reservedTables').where("uid", "==", db.doc("users/" + firebase.auth().currentUser.uid)).get()
+    db.collection('invoices').where("uid", "==", db.doc("users/" + firebase.auth().currentUser.uid)).get()
     .then(res => {
       res.forEach(doc => {
         const newItem = doc.data();
@@ -70,35 +73,70 @@ export default {
           .then(res => { 
             newItem.table = res.data()
             newItem.table.id = res.id
-            this.invoices.push(newItem);
+            if(newItem.status){
+              newItem.status.get()
+              .then(res => {
+                newItem.status = res.data()
+                newItem.status.id = res.id
+                this.invoices.push(newItem);
+              })
+              .catch(err => console.error(err));
+            }            
           })
-          .catch(err => console.error(err));
+          .catch(err => console.error(err));          
         } else {
           this.invoices.push(newItem);  
         }
-
       });
     })
     .catch(err => { console.error(err) }); 
     
   },
   methods: {
-      getTimeDiff(invoice){
-        const diff = new Date(invoice.expireDate.seconds).getTime() - new Date(invoice.reservedDate.seconds).getTime()
-        const hours = parseInt( diff / 3600 );
-        const minutes = parseInt( (diff - (hours * 3600)) / 60 );
-        return hours + " ชั่วโมง " + minutes + " นาที"
-      },
-      cancelReserve(invoice){
-        db.collection("reservedTables").doc(invoice.id)
-        .delete().then(() => {
-              db.collection("Tables").doc(invoice.table.id).update({'available': true});
-              alert("ลบการจองของคุณออกจากระบบเรียบร้อย!");
-              window.location.reload()       
-        }).catch((error) => {
-            console.error("Error removing document: ", error);
-        });
-      }
+    getTimeDiff(invoice){
+      const diff = new Date(invoice.expireDate.seconds).getTime() - new Date(invoice.reservedDate.seconds).getTime()
+      const hours = parseInt( diff / 3600 );
+      const minutes = parseInt( (diff - (hours * 3600)) / 60 );
+      return hours + " ชั่วโมง " + minutes + " นาที"
+    },
+    cancelReserve(invoice){
+      db.collection("invoices").doc(invoice.id)
+      .update({'status': db.doc('invoiceStatus/' + '2')}).then(() => {
+            db.collection("Tables").doc(invoice.table.id)
+            .update({'available': true})
+            .then(() => {
+              alert("ยกเลิกการจองของคุณเรียบร้อยแล้ว!");
+              window.location.reload()  
+            })                   
+      }).catch((error) => {
+          console.error("Error updating document: ", error);
+      });
+    }
+  },
+  computed: {
+    orderStatus: function (){
+      return this.invoices.slice().sort(function(a, b){
+        return (a.status > b.status) ? 1 : -1;
+      });
+    }
   }
 }
 </script>
+
+<style>
+#invoiceState_0{
+  color: gray;
+}
+#invoiceState_1{
+  color: green;
+  font-weight: bold;
+}
+#invoiceState_2{
+  color: orange;
+  font-weight: bold;
+}
+#invoiceState_3{
+  color: rgb(88, 159, 180);
+  font-weight: bold;
+}
+</style>
