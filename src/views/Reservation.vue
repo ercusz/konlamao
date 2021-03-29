@@ -224,10 +224,19 @@ export default {
       this.initReCaptcha()
       db.collection("users").doc(firebase.auth().currentUser.uid)
       .get().then(res => {
-        this.verified = res.data().phoneVerified
-        if(res.data().phoneVerified != true){
+        console.log(firebase.auth().currentUser.uid)
+        console.log(res.data().phoneVerified)
+        if(res.data().phoneVerified != null){
+          if(res.data().phoneVerified === true){
+            this.verified = true
+          }
+          else{
+            this.verified = false
+          }
+        }else{
           this.verified = false
         }
+        
       }).catch((error) => {
         this.verified = false
       });
