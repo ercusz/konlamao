@@ -1,5 +1,5 @@
 <template>
-
+  
   <!-- Modal -->
   <div class="modal fade" id="verifyPhone" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -27,18 +27,22 @@
     </div>
   </div>
   
-  <div v-if="this.verified === false" class="container">
+  <div v-if="this.verified === false && timeCheck() === true" class="container">
     <h3 class="title text-white">กรุณายืนยันเบอร์โทรศัพท์ก่อนจองโต๊ะ</h3>
     <button type="button" class="btn btn-dark mt-3 bg-danger" data-bs-toggle="modal" data-bs-target="#verifyPhone">
       ยืนยันเบอร์โทรศัพท์
     </button>
   </div>
 
-  <div v-if="this.verified === true && timeCheck() === true" class="box text-light">
+  <div v-else-if="this.verified === true && timeCheck() === true" class="box text-light">
     <h3 class="title">Reservation System</h3>
     <floors @chooseFloor="handleChooseFloor" :floorId="floorId" />
+    <div>
+      <h4>
+        จะหมดเวลาจอง {{moment}}
+      </h4>
+    </div>
     <div v-if="selectedTable.length > 0" class="mb-3">
-
       <transition name="fade">
         <div class="card card-body bg-dark text-white">
           <span class="circle bg-danger bg-gradient mb-2"
@@ -76,9 +80,9 @@
       :selectedTable="selectedTable"
     />
   </div>
-  <div v-else>
+  <template v-else>
     <h1 class="text-white text-center">หมดเวลาในการจองโต๊ะ<br>กรุณาลองใหม่อีกครั้งในช่วงเวลา 00:00 น. จนถึง 19:00 น.</h1>
-  </div>
+</template>
 </template>
 
 <script>
@@ -86,6 +90,7 @@ import Floors from "../components/Floor.vue";
 import Tables from "../components/Table";
 import firebase from "firebase";
 import { db } from "../main"
+import moment from 'moment'
 
 export default {
   props: ["username"],
@@ -97,7 +102,8 @@ export default {
       phNo: '',
       appVerifier : '',
       otp : '',
-      verified: false
+      verified: false,
+      moment: moment().locale('th').to(moment().set({'hour': 19, 'minute': 0}))
     };
   },
   methods: {
@@ -223,10 +229,10 @@ export default {
         },1000)
       },
       timeCheck(){
-        const now = new Date(firebase.firestore.Timestamp.now().seconds).getTime()
-        //const now = new Date(firebase.firestore.Timestamp.now().seconds).setHours(22, 0, 0) //for testing
-        const timeClose = new Date(firebase.firestore.Timestamp.now().seconds).setHours(19, 0, 0)
-        const diff = timeClose - now
+        const now = new Date(firebase.firestore.Timestamp.now().seconds*1000).getTime()
+        //const now = new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(22, 0, 0) //for testing
+        const timeClose = new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(19, 0, 0)
+        const diff = parseInt(timeClose - now)
         if(diff < 1){
           return false
         }
@@ -234,29 +240,28 @@ export default {
           return true
         }
       }
-
-    },
-    created(){
-      this.timeCheck()
-      this.initReCaptcha()
-      db.collection("users").doc(firebase.auth().currentUser.uid)
-      .get().then(res => {
-        console.log(firebase.auth().currentUser.uid)
-        console.log(res.data().phoneVerified)
-        if(res.data().phoneVerified != null){
-          if(res.data().phoneVerified === true){
-            this.verified = true
-          }
-          else{
-            this.verified = false
-          }
-        }else{
+  },
+  created(){    
+    this.timeCheck()
+    this.initReCaptcha()
+    db.collection("users").doc(firebase.auth().currentUser.uid)
+    .get().then(res => {
+      //console.log(firebase.auth().currentUser.uid)
+      //console.log(res.data().phoneVerified)
+      if(res.data().phoneVerified != null){
+        if(res.data().phoneVerified === true){
+          this.verified = true
+        }
+        else{
           this.verified = false
         }
-        
-      }).catch((error) => {
+      }else{
         this.verified = false
-      });
-    }
+      }
+      
+    }).catch((error) => {
+      this.verified = false
+    });
   }
+}
 </script>

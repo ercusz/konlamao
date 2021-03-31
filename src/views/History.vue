@@ -1,4 +1,5 @@
 <template>
+
     <div v-if="this.invoices.length === 0">
       <h2 class="text-white text-center">คุณไม่มีรายการจองโต๊ะล่าสุด</h2>
     </div>
@@ -24,7 +25,8 @@
               </button>
           </div>
           <div class="card-footer text-muted">
-              <small class="text-danger" v-if="invoice.status.id === '0'" >**กรุณาจ่ายเงินภายใน {{ getTimeDiff(invoice) }}**</small>
+              <p class="card-text">เวลาที่จอง {{ getReservedDate(invoice) }} </p>
+              <small class="text-danger" v-if="invoice.status.id === '0'" >**{{ getTimeDiff(invoice) }}**</small>
           </div>          
       </div>
     </div>
@@ -53,13 +55,15 @@
 <script>
 import { db } from "../main"
 import firebase from "firebase/app"
+import moment from "moment"
 
 export default {
   props: ["username"],
   data() {
     return {
       invoices: [],
-      currentCancel: {}
+      currentCancel: {},
+      moment: moment
     };
   },
   created(){
@@ -89,15 +93,28 @@ export default {
         }
       });
     })
-    .catch(err => { console.error(err) }); 
-    
+    .catch(err => { console.error(err) });
   },
   methods: {
     getTimeDiff(invoice){
-      const diff = new Date(invoice.expireDate.seconds).getTime() - new Date(invoice.reservedDate.seconds).getTime()
-      const hours = parseInt( diff / 3600 );
-      const minutes = parseInt( (diff - (hours * 3600)) / 60 );
-      return hours + " ชั่วโมง " + minutes + " นาที"
+      const now = moment()
+      //const create = moment(invoice.reservedDate.toDate())
+      const expire = moment(invoice.expireDate.toDate())
+      /*console.log("================= " + invoice.table.id + " ======================")
+      console.log(invoice.id)
+      console.log(now.format())
+      console.log(create.format())
+      console.log(expire.format())
+      console.log("=================================================")*/
+      if(!moment(now).isAfter(expire)){
+        const hours = expire.diff(now, 'hours')
+        const minutes = parseInt(expire.diff(now, 'minutes') / 60)
+        return "กรุณาชำระเงินภายใน " + hours + " ชั่วโมง " + minutes + " นาที"        
+      }
+      else{
+        return "สิ้นสุดเวลาชำระเงิน"
+      }
+
     },
     cancelReserve(invoice){
       db.collection("invoices").doc(invoice.id)
@@ -111,14 +128,18 @@ export default {
       }).catch((error) => {
           console.error("Error updating document: ", error);
       });
+    },
+    getReservedDate(invoice){
+      return moment(invoice.reservedDate.toDate()).locale('th').format("dddd, MMMM Do YYYY, h:mm:ss a")
     }
   },
   computed: {
     orderStatus: function (){
       return this.invoices.slice().sort(function(a, b){
-        return (a.status > b.status) ? 1 : -1;
+        return (a.reservedDate < b.reservedDate) ? 1 : -1;
       });
-    }
+    },
+
   }
 }
 </script>
