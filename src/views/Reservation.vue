@@ -130,30 +130,39 @@ export default {
     clearTable() {
       this.selectedTable = [];
     },
+    calExpireTime(){
+      const expire = firebase.firestore.Timestamp.now().toDate();
+      return new Date(expire.setHours(expire.getHours()+2));
+    },
     confirmReservation(){
       if(this.selectedTable[0].available === true){
         db.collection("invoices")
             .add({
               uid: db.doc('users/' + firebase.auth().currentUser.uid),
               reservedDate: firebase.firestore.Timestamp.now(),
-              expireDate: new Date(firebase.firestore.Timestamp.now().toDate().setHours(19, 0, 0)),
-              table: db.doc('Tables/' + this.selectedTable[0].id),
+              expireDate: this.calExpireTime(),
+              table: this.selectedTable[0].id,
+              price: this.selectedTable[0].price,
               status: db.doc('invoiceStatus/' + '0')
             })
             .then(() => {
+              console.log('1')
               db.doc('Tables/' + this.selectedTable[0].id).update({
                   available: false
               })
               .then(() => {
+                console.log('2')
                   this.selectedTable = []
                   alert("Successfully reserved!");
               })
               .catch((error) => {
+                console.log('3')
                   // The document probably doesn't exist.
                   console.error("Error updating document: ", error)
               });      
             })
             .catch(error => {
+              console.log('4')
               console.error("Error writing document: ", error)
             });
       }
