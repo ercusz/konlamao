@@ -36,7 +36,7 @@
 
   <div v-else-if="this.verified === true && timeCheck() === true" class="box text-light">
     <h3 class="title">Reservation System</h3>
-    <floors @chooseFloor="handleChooseFloor" :floorId="floorId" />
+    
     <div>
       <h4>
         จะหมดเวลาจอง {{moment}}
@@ -114,10 +114,10 @@ import moment from 'moment'
 
 export default {
   props: ["username", "isAdmin"],
-  components: { Floors, Tables },
+  components: {  Tables },
   data() {
     return {
-      floorId: "",
+      floorId: "first",
       selectedTable: [],
       phNo: '',
       appVerifier : '',
@@ -129,9 +129,7 @@ export default {
     };
   },
   methods: {
-    handleChooseFloor(floorId) {
-      this.floorId = floorId;
-    },
+
     handleChooseTable(table) {
       const ids = this.selectedTable.map(t => t.id);
       const idx = ids.indexOf(table.id);

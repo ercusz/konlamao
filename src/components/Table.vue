@@ -1,7 +1,7 @@
 <template>
   <div class="text-white">
     <!--First Floor-->
-    <table style="width:100%;" v-if="floorId == 'first'" class="shadow-lg">
+    <table style="width:100%;" v-if="floorId == 'HUMYAI'" class="shadow-lg">
       <colgroup>
         <col style="width:12%;" />
         <col style="width:12%;" />
@@ -310,7 +310,7 @@
     <!--Second Floor-->
     <table
       style="width:100%;"
-      v-else-if="floorId == 'second'"
+      v-else-if="floorId == 'HUMNOI'"
       class="shadow-lg"
     >
       <colgroup>
@@ -549,6 +549,30 @@
       </tr>
     </table>
     
+    <div class="card text-white bg-dark mb-3 shadow-lg" v-if="floorId=='first'">
+        <div >
+            <h3>แก้ไขรายละเอียดโต๊ะ</h3>
+            <h4>โต๊ะ: {{this.selectTable.id}}</h4>
+            <h6>ชั้น: {{this.selectTable.floor}}</h6>
+            <h6>โต๊ะว่าง: {{this.selectTable.available}}</h6>
+            <h6 class="mb-3">price: {{this.selectTable.price}} ฿</h6>
+
+            <div class="btn-group">
+            <select v-model="this.selectTable" class="form-select">
+              <option selected>กรุณาเลือกโต๊ะ</option>
+              <option v-bind:value="t" v-for="t in tables" :key="t">{{t.id}}</option>
+            </select>
+            
+          </div>
+         
+        </div>
+         <button
+              class="btn btn-dark mt-3 bg-success" 
+              @click="chooseTable(this.selectTable)"       
+            >
+              เลือก
+            </button>
+    </div>
   </div>
 </template>
 
@@ -559,7 +583,8 @@ export default {
   props: ["floorId", "selectedTable"],
   data() {
     return {
-      tables: []
+      tables: [],
+      selectTable: "กรุณาเลือกโต๊ะ",
     };
   },
   created(){
@@ -592,7 +617,13 @@ export default {
       }
     },
     chooseTable(table) {
-      return [this.$emit("chooseTable", table)];
+      if(table.available === false){
+        alert("โต๊ะถูกจองแล้วไม่สามารถเลือกโต๊ะได้")
+      }
+      else{
+        return [this.$emit("chooseTable", table)];
+      }
+      
     }
   }  
 };

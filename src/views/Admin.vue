@@ -32,6 +32,60 @@
         >
           ยืนยัน
         </button>
+        <button
+          class="btn btn-dark mt-3 bg-danger" 
+          @click="deleteTable()"       
+        >
+          ลบโต๊ะ
+        </button>
+      </div>
+
+      <div class="card text-white bg-dark mb-3 shadow-lg">
+        <h3>เพิ่มโต๊ะ</h3>
+        <div>
+            <label for="ADDTableId">รหัสโต๊ะ</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="กรุณากรอกรหัสโต๊ะ"
+                  id="ADDTableId"
+                  v-model="this.ADDTableId"
+                />
+
+          <label for="ADDTableFloor">ชั้น</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  placeholder="กรุณากรอกชั้น"
+                  id="ADDTableFloor"
+                  v-model="this.ADDTableFloor"
+                />
+
+          <label for="ADDTablePrice">ราคา</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  placeholder="กรุณากรอกราคา"
+                  id="ADDTablePrice"
+                  v-model="this.ADDTablePrice"
+                />
+
+          <label for="ADDTableAvailable">สถานะโต๊ะว่าง</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="กรุณากรอกสถานะโต๊ะว่าง"
+                  id="ADDTableAvailable"
+                  v-model="this.ADDTableAvailable"
+                />
+
+          </div>
+          <button
+            class="btn btn-dark mt-3 bg-success" 
+            @click="addTables()"       
+          >
+            ยืนยัน
+          </button>
       </div>
 
       <div class="card text-white bg-dark mb-3 shadow-lg">
@@ -192,7 +246,11 @@ export default {
       expiredInvoices: [],
       currentPaymentDesc: {},
       allReservedTables: [],
-      allReservedTablesPrice: 0
+      allReservedTablesPrice: 0,
+      ADDTableId: "",
+      ADDTableFloor: 0,
+      ADDTablePrice: 0,
+      ADDTableAvailable: false
     };
   },
   created(){
@@ -245,6 +303,29 @@ export default {
     this.getReservedTableFromInvoices()
   },
   methods: {
+    addTables(){
+      if(this.ADDTableId != null
+      && this.ADDTableFloor >= 1
+      && this.ADDTableFloor <= 2
+      && this.ADDTablePrice >= 0){
+        db.collection("Tables").doc(this.ADDTableId)
+          .set({
+            available: (this.ADDTableAvailable === 'true'),
+            floor: parseInt(this.ADDTableFloor),
+            price: parseInt(this.ADDTablePrice)
+          })
+          .then(() => {
+            alert("เพิ่มโต๊ะเรียบร้อย!");
+            window.location.reload()   
+          })
+          .catch(error => {
+              console.error("Error writing document: ", error)
+          });
+      }
+      else{
+        alert("กรุณากรอกข้อมูลให้ถูกต้อง!");
+      }
+    },
     getReservedTableFromInvoices(){
       const midnight = new Date(new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(0, 0, 0))
       const closereserve = new Date(new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(19, 0, 0))
@@ -368,6 +449,18 @@ export default {
         return invoice.phone
       }
     },
+    deleteTable(){
+      if(this.selectedTable != "กรุณาเลือกโต๊ะ"){
+        db.collection("Tables").doc(this.selectedTable.id).delete().then(() => {
+          alert("ลบโต๊ะเรียบร้อยแล้ว!");
+        }).catch((error) => {
+          console.error("Error removing document: ", error);
+        });
+      }
+      else{
+        alert("กรุณาเลือกโต๊ะก่อนทำรายการ!");
+      }
+    },
     updateTable(){
       if(this.selectedTable != "กรุณาเลือกโต๊ะ" && this.tableOption != "กรุณาเลือกฟิลด์" && this.tableOptionData != null){
         console.log('Hello World')
@@ -398,6 +491,9 @@ export default {
               window.location.reload()  
             })                
       }
+      else{
+        alert("กรุณาเลือกโต๊ะก่อนทำรายการ!");
+      }
     },
     availableAllTables(){
       db.collection("Tables").get().then(function(querySnapshot) {
@@ -405,11 +501,12 @@ export default {
               doc.ref.update({
                   available: true
               }).then(() => {
-                alert("อัปเดตข้อมูลเรียบร้อย!");
-                window.location.reload()  
+                  console.log('available all tables')
               })
           });
       });
+      alert("อัปเดตข้อมูลเรียบร้อย!");
+      window.location.reload()
     },
     cancelExpiredInvoices(){
       this.invoices.forEach(invoice => {
@@ -417,6 +514,8 @@ export default {
           this.cancelReserve(invoice, true)
         }
       })
+      alert("ยกเลิกการจองที่หมดอายุเรียบร้อย!");
+      window.location.reload()  
     },
     cancelAllInvoices(){
       this.invoices.forEach(invoice => {
@@ -424,6 +523,8 @@ export default {
           this.cancelReserve(invoice, true)
         }
       })
+      alert("ยกเลิกการจองทั้งหมดเรียบร้อย!");
+      window.location.reload()  
     }
   },
   computed: {
