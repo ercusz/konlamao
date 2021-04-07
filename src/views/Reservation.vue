@@ -54,6 +54,26 @@
             >
           </h4>
           ค่าเปิดโต๊ะ {{ selectedTable[0].price }} บาท (รวมเครื่องดื่ม🍺)
+
+          <div v-if="isAdmin === true">
+            <label for="reservedName">ชื่อผู้จอง</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="กรุณากรอกชื่อผู้จอง"
+                  id="reservedName"
+                  v-model="reservedName"
+                />
+          <label for="reservedPhone">เบอร์โทรศัพท์ผู้จอง</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="กรุณากรอกเบอร์โทรศัพท์ผู้จอง"
+                  id="reservedPhone"
+                  v-model="reservedPhone"
+                />
+          </div>
+          
           <h6 class="text-secondary"><br>หากคุณไม่ชำระเงินค่าจองโต๊ะก่อน 19:00 น.<br>โต๊ะของคุณจะหลุดจองทันที</h6>
           <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
             <button
@@ -93,7 +113,7 @@ import { db } from "../main"
 import moment from 'moment'
 
 export default {
-  props: ["username"],
+  props: ["username", "isAdmin"],
   components: { Floors, Tables },
   data() {
     return {
@@ -103,7 +123,9 @@ export default {
       appVerifier : '',
       otp : '',
       verified: false,
-      moment: moment().locale('th').to(moment().set({'hour': 19, 'minute': 0}))
+      moment: moment().locale('th').to(moment().set({'hour': 19, 'minute': 0})),
+      reservedName: "",
+      reservedPhone: ""
     };
   },
   methods: {
@@ -136,7 +158,36 @@ export default {
     },
     confirmReservation(){
       if(this.selectedTable[0].available === true){
-        db.collection("invoices")
+        if(this.isAdmin == true){
+          db.collection("invoices")
+            .add({
+              name: this.reservedName,
+              phone: this.reservedPhone,
+              reservedDate: firebase.firestore.Timestamp.now(),
+              expireDate: this.calExpireTime(),
+              table: this.selectedTable[0].id,
+              price: this.selectedTable[0].price,
+              status: db.doc('invoiceStatus/' + '0')
+            })
+            .then(() => {
+              db.doc('Tables/' + this.selectedTable[0].id).update({
+                  available: false
+              })
+              .then(() => {
+                  this.selectedTable = []
+                  alert("Successfully reserved!");
+              })
+              .catch((error) => {
+                  // The document probably doesn't exist.
+                  console.error("Error updating document: ", error)
+              });      
+            })
+            .catch(error => {
+              console.error("Error writing document: ", error)
+            });
+        }
+        else{
+          db.collection("invoices")
             .add({
               uid: db.doc('users/' + firebase.auth().currentUser.uid),
               reservedDate: firebase.firestore.Timestamp.now(),
@@ -146,25 +197,23 @@ export default {
               status: db.doc('invoiceStatus/' + '0')
             })
             .then(() => {
-              console.log('1')
               db.doc('Tables/' + this.selectedTable[0].id).update({
                   available: false
               })
               .then(() => {
-                console.log('2')
                   this.selectedTable = []
                   alert("Successfully reserved!");
               })
               .catch((error) => {
-                console.log('3')
                   // The document probably doesn't exist.
                   console.error("Error updating document: ", error)
               });      
             })
             .catch(error => {
-              console.log('4')
               console.error("Error writing document: ", error)
             });
+        }
+        
       }
       else{
        alert("เกิดข้อผิดพลาด โต๊ะถูกคนอื่นจองไปแล้ว!")

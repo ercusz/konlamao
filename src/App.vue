@@ -96,7 +96,7 @@
     <main class="px-3">
       <!-- Router view -->
       <div class="container pt-5 pb-5">
-        <router-view :username="username"></router-view>
+        <router-view :username="username" :isAdmin="isAdmin"></router-view>
       </div>
     </main>
 

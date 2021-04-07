@@ -1,67 +1,88 @@
 <template>
-    <div v-if="isAdmin">
-        <h1 class="text-white mb-3">ระบบจัดการข้อมูล</h1>
-        <div class="card text-white bg-dark mb-3 shadow-lg">
-            <div v-if="this.selectedTable != 'กรุณาเลือกโต๊ะ'">
-                <h3>แก้ไขรายละเอียดโต๊ะ</h3>
-                <h4>โต๊ะ: {{this.selectedTable.id}}</h4>
-                <h6>floor: {{this.selectedTable.floor}}</h6>
-                <h6>available: {{this.selectedTable.available}}</h6>
-                <h6 class="mb-3">price: {{this.selectedTable.price}} ฿</h6>
-            </div>
-            
-            
-            <div class="btn-group">
-              <select v-model="this.selectedTable" class="form-select">
-                <option selected>กรุณาเลือกโต๊ะ</option>
-                <option v-bind:value="t" v-for="t in tableSort" :key="t">{{t.id}}</option>
-              </select>
-            </div>
-            <div class="input-group mb-3">
-              <select v-model="this.tableOption" class="form-select-sm" for="inputText">
-                <option selected>กรุณาเลือกฟิลด์</option>
-                <option value="floor">floor</option>
-                <option value="available">available</option>
-                <option value="price">price</option>
-              </select>
-              <input v-model="this.tableOptionData" :placeholder="this.tableOption" id="inputText" type="text" class="form-control" aria-label="Text input with dropdown button">
-            </div>
-            <button
-              class="btn btn-dark mt-3 bg-success" 
-              @click="updateTable()"       
-            >
-              ยืนยัน
-            </button>
+    <div v-if="isAdmin === true">
+      <h1 class="text-white mb-3">ระบบจัดการข้อมูล</h1>
+      <div class="card text-white bg-dark mb-3 shadow-lg">
+        <div v-if="this.selectedTable != 'กรุณาเลือกโต๊ะ'">
+            <h3>แก้ไขรายละเอียดโต๊ะ</h3>
+            <h4>โต๊ะ: {{this.selectedTable.id}}</h4>
+            <h6>floor: {{this.selectedTable.floor}}</h6>
+            <h6>available: {{this.selectedTable.available}}</h6>
+            <h6 class="mb-3">price: {{this.selectedTable.price}} ฿</h6>
+        </div>
+        
+        
+        <div class="btn-group">
+          <select v-model="this.selectedTable" class="form-select">
+            <option selected>กรุณาเลือกโต๊ะ</option>
+            <option v-bind:value="t" v-for="t in tableSort" :key="t">{{t.id}}</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <select v-model="this.tableOption" class="form-select-sm" for="inputText">
+            <option selected>กรุณาเลือกฟิลด์</option>
+            <option value="floor">floor</option>
+            <option value="available">available</option>
+            <option value="price">price</option>
+          </select>
+          <input v-model="this.tableOptionData" :placeholder="this.tableOption" id="inputText" type="text" class="form-control" aria-label="Text input with dropdown button">
+        </div>
+        <button
+          class="btn btn-dark mt-3 bg-success" 
+          @click="updateTable()"       
+        >
+          ยืนยัน
+        </button>
+      </div>
 
-        </div>
-        <div class="card text-white bg-dark mb-3 shadow-lg">
-            <h3>ปรับสถานะโต๊ะ/การจอง</h3>
-            <button
-                class="btn btn-dark mt-3 bg-success" 
-                @click="availableAllTables()"  
-              >
-              ปรับสถานะเป็นโต๊ะว่างทั้งหมด
-              </button>
-              <button
-                class="btn btn-dark mt-3 bg-danger" 
-                @click="cancelExpiredInvoices()"   
-              >
-              ยกเลิกการจองที่หมดเวลาชำระเงิน
-              </button>
-              <button
-                class="btn btn-dark mt-3 bg-secondary"
-                @click="cancelAllInvoices()" 
-              >
-              ยกเลิกการจองทั้งหมด
-              </button>
-        </div>
+      <div class="card text-white bg-dark mb-3 shadow-lg">
+        <h3>ปรับสถานะโต๊ะ/การจอง</h3>
+        <button
+            class="btn btn-dark mt-3 bg-success" 
+            @click="availableAllTables()"  
+          >
+          ปรับสถานะเป็นโต๊ะว่างทั้งหมด
+          </button>
+          <button
+            class="btn btn-dark mt-3 bg-danger" 
+            @click="cancelExpiredInvoices()"   
+          >
+          ยกเลิกการจองที่หมดเวลาชำระเงิน
+          </button>
+          <button
+            class="btn btn-dark mt-3 bg-secondary"
+            @click="cancelAllInvoices()" 
+          >
+          ยกเลิกการจองทั้งหมด
+          </button>
+      </div>
+
+      <div class="card text-white bg-dark mb-3 shadow-lg">
+        <h3>ข้อมูลการจองโต๊ะของวันนี้</h3>
+        จำนวนโต๊ะที่ถูกจองทั้งหมด(รวมโต๊ะที่ถูกยกเลิก): <strong class="text-info">{{ this.allReservedTables.length }}  โต๊ะ</strong><br>
+        ราคาค่าจองโต๊ะที่ต้องได้รับ(ไม่รวมการจองที่ถูกยกเลิก): 
+        <strong class="text-info">
+          {{ this.allReservedTables
+          .reduce(function(a, b) 
+          { 
+            return (b.status.id !== '2' && (b.status.id !== '3')) ? parseInt(a) + parseInt(b.price) : 0 
+            }, 0) }} บาท</strong><br>
+        ราคาค่าจองโต๊ะที่ได้รับแล้ว: 
+        <strong class="text-info">
+        {{ this.allReservedTables
+          .reduce(function(a, b) 
+          { 
+            return (b.status.id === '1') ? parseInt(a) + parseInt(b.price) : parseInt(a)
+            }, 0) }} บาท
+        </strong><br>
+      </div>
+
       <div class="card text-white bg-dark mb-3 shadow-lg" v-for="invoice in orderStatus" :key="invoice">
           <div class="card-header" >
-              รหัสการจอง <strong class="text-danger">{{ invoice.id}}</strong>              
+              รหัสการจอง <strong class="text-danger">{{ invoice.id }}</strong>              
           </div>
           <div class="card-body">
-              <h5 class="card-title">รหัสโต๊ะ: {{ invoice.table.id }}</h5>
-              <p class="card-text">ราคา {{ invoice.table.price }} บาท</p>
+              <h5 class="card-title">รหัสโต๊ะ: {{ invoice.table }}</h5>
+              <p class="card-text">ราคา {{ invoice.price }} บาท</p>
               <p class="card-text">
                 สถานะ: <label :id="'invoiceState_' + invoice.status.id">{{ invoice.status.desc }}</label> 
               </p>
@@ -70,8 +91,8 @@
                 class="btn btn-dark mt-3 bg-success" 
                 data-bs-toggle="modal" 
                 data-bs-target="#confirmModal"
-                @click="this.currentConfirm = invoice"
-                v-if="invoice.status.id === '0'"           
+                @click="this.currentConfirm = invoice; getPaymentDesc(invoice)"
+                v-if="invoice.status.id === '0' || invoice.status.id === '4'"           
               >
               ยืนยันการชำระเงิน
               </button>
@@ -80,14 +101,14 @@
                 data-bs-toggle="modal" 
                 data-bs-target="#cancelModal"
                 @click="this.currentCancel = invoice"
-                v-if="invoice.status.id === '0'"           
+                v-if="invoice.status.id === '0' || invoice.status.id === '4'"           
               >
               ยกเลิกการจอง
               </button>
           </div>
           <div class="card-footer text-muted">
-              Username ผู้จอง <strong class="text-info">{{ invoice.uid.username }}</strong><br>
-              เบอร์ติดต่อ <strong class="text-info">{{ invoice.uid.phoneNumber }}</strong>
+              Username ผู้จอง <strong class="text-info">{{ getUsername(invoice) }}</strong><br>
+              เบอร์ติดต่อ <strong class="text-info">{{ getPhoneNumber(invoice) }}</strong>
           </div>          
       </div>
     </div>
@@ -104,10 +125,23 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body bg-dark text-white">
-            รหัสโต๊ะ: <strong class="text-info">{{ getTableId(this.currentConfirm.table) }}</strong><br>
-            ราคา <strong class="text-info">{{getPrice(this.currentConfirm.table)}}</strong><br>
-            ผู้จอง <strong class="text-info">{{ getUsername(this.currentConfirm.uid) }}</strong><br>
-            เบอร์ติดต่อ <strong class="text-info">{{ getPhoneNumber(this.currentConfirm.uid) }}</strong>
+            <div class="mb-3">
+              <h4>ข้อมูลการจอง</h4>
+              รหัสโต๊ะ: <strong class="text-info">{{ this.currentConfirm.table }}</strong><br>
+              ราคา <strong class="text-info">{{ this.currentConfirm.price }}</strong><br>
+              ผู้จอง <strong class="text-info">{{ getUsername(this.currentConfirm) }}</strong><br>
+              เบอร์ติดต่อ <strong class="text-info">{{ getPhoneNumber(this.currentConfirm) }}</strong>
+            </div>
+            <div class="mb-3" v-if="this.currentPaymentDesc != null">
+              <h4>ข้อมูลการชำระเงิน</h4>
+              ช่องทางการชำระเงิน: <strong class="text-info">{{ this.currentPaymentDesc.paymentMethod }}</strong><br>
+              ธนาคารของลูกค้า: <strong class="text-info">{{ this.currentPaymentDesc.customerBank }}</strong><br>
+              จำนวนเงินที่โอน: <strong class="text-info">{{ this.currentPaymentDesc.paymentMoney }}</strong><br>
+              วันที่และเวลาที่โอน: <strong class="text-info">{{ getPaymentDate(this.currentPaymentDesc) }}</strong>
+            </div>
+            <div v-else>
+              <h4>ไม่พบข้อมูลการชำระเงิน</h4>
+            </div>           
           </div>
           <div class="modal-footer bg-dark">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ไม่ใช่</button>
@@ -136,7 +170,6 @@
       </div>
     </div>
 
-    
 </template>
 
 <script>
@@ -145,7 +178,7 @@ import firebase from "firebase/app"
 import moment from "moment"
 
 export default {
-  props: ["username"],
+  props: ["username", "isAdmin"],
   data() {
     return {
       invoices: [],
@@ -157,24 +190,16 @@ export default {
       tableOption: "กรุณาเลือกฟิลด์",
       tableOptionData: null,
       expiredInvoices: [],
-      isAdmin: false
+      currentPaymentDesc: {},
+      allReservedTables: [],
+      allReservedTablesPrice: 0
     };
   },
   created(){
-    db.collection("users").doc(firebase.auth().currentUser.uid)
-        .get().then((doc) => {
-            if (doc.exists) {
-                this.isAdmin = doc.data().isAdmin
-                if(!this.isAdmin){
-                    setTimeout( () => this.$router.push({name:'Home'}), 2000)
-                }
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
-        })
+    
+    if(!this.isAdmin){
+        setTimeout( () => this.$router.push({name:'Home'}), 2000)
+    }
 
     db.collection('Tables').get()
     .then(res => {
@@ -191,39 +216,75 @@ export default {
       res.forEach(doc => {
         const newItem = doc.data();
         newItem.id = doc.id;
-        if (newItem.table) {
-          newItem.table.get()
-          .then(res => { 
-            newItem.table = res.data()
-            newItem.table.id = res.id
-            if(newItem.status){
-              newItem.status.get()
-              .then(res => {
-                newItem.status = res.data()
-                newItem.status.id = res.id
-                if(newItem.uid){
-                    newItem.uid.get()
-                    .then(res => {
-                        newItem.uid = res.data()
-                        newItem.uid.id = res.id
-                        this.invoices.push(newItem);
-                    })
-                    .catch(err => console.error(err));
-                    }  
-              })
-              .catch(err => console.error(err));
-            }            
-          })
-          .catch(err => console.error(err));          
+        if(newItem.status){
+            newItem.status.get()
+            .then(res => {
+              newItem.status = res.data()
+              newItem.status.id = res.id
+              if(typeof newItem.uid != 'undefined'){
+                newItem.uid.get()
+                .then(res => {
+                    newItem.uid = res.data()
+                    newItem.uid.id = res.id
+                    this.invoices.push(newItem);
+                })
+                .catch(err => console.error(err));
+              }
+              else{
+                this.invoices.push(newItem);
+              }  
+            })
+        .catch(err => console.error(err));          
         } else {
           this.invoices.push(newItem);  
         }
       });
     })
     .catch(err => { console.error(err) }); 
-    
+
+    this.getReservedTableFromInvoices()
   },
   methods: {
+    getReservedTableFromInvoices(){
+      const midnight = new Date(new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(0, 0, 0))
+      const closereserve = new Date(new Date(firebase.firestore.Timestamp.now().seconds*1000).setHours(19, 0, 0))
+      console.log(midnight)
+      console.log(closereserve)
+      db.collection('invoices')
+      .where('reservedDate', '>=', midnight)
+      .where('reservedDate', '<=', closereserve)
+      .get()
+      .then(res => {
+        res.forEach(doc => {
+          const newItem = doc.data();
+          newItem.id = doc.id;
+          if(newItem.status){
+            newItem.status.get()
+            .then(res => {
+              newItem.status = res.data()
+              newItem.status.id = res.id
+              this.allReservedTables.push(newItem)
+            })
+          }
+        })
+      })
+      .catch(err => { console.error(err) }); 
+      console.log(this.allReservedTables)
+
+    },
+    getPaymentDesc(invoice){      
+      db.collection('paymentDesc').doc(invoice.id).get()
+      .then(res => {
+        const newItem = res.data()
+        newItem.id = res.id
+        this.currentPaymentDesc = newItem
+        console.log(this.currentPaymentDesc)
+      })
+      .catch(err => {
+        console.error(err)
+        this.currentPaymentDesc = null
+      }); 
+    },
     isExpired(invoice){
       const now = moment()
       const expire = moment(invoice.expireDate.toDate())
@@ -284,21 +345,28 @@ export default {
     getReservedDate(invoice){
       return moment(invoice.reservedDate.toDate()).locale('th').format("dddd, MMMM Do YYYY, h:mm:ss a")
     },
-    getTableId(table){
-      if(typeof table != 'undefined')
-      return table.id
+    getPaymentDate(paymentdesc){
+      if(typeof paymentdesc.paymentDate != 'undefined'){
+        return moment(paymentdesc.paymentDate.toDate()).locale('th').format("dddd, MMMM Do YYYY, h:mm:ss a")
+
+      }
     },
-    getPrice(table){
-      if(typeof table != 'undefined')
-      return table.price
+    getUsername(invoice){
+      if(typeof invoice.uid != 'undefined'){
+        return invoice.uid.username
+      }
+      else{
+        return invoice.name
+      }
+      
     },
-    getUsername(uid){
-      if(typeof uid != 'undefined')
-      return uid.username
-    },
-    getPhoneNumber(uid){
-      if(typeof uid != 'undefined')
-      return uid.phoneNumber
+    getPhoneNumber(invoice){
+      if(typeof invoice.uid != 'undefined'){
+        return invoice.uid.phoneNumber
+      }
+      else{
+        return invoice.phone
+      }
     },
     updateTable(){
       if(this.selectedTable != "กรุณาเลือกโต๊ะ" && this.tableOption != "กรุณาเลือกฟิลด์" && this.tableOptionData != null){
