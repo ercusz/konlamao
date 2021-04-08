@@ -14,15 +14,11 @@
 </template>
 
 <script>
-
 export default {
   props: ["floorId"],
   data() {
     return {
-      floor: [
-        { "id": "first" },
-        { "id": "second"}
-      ]
+      floor: [{ id: "first" }, { id: "second" }]
     };
   },
   methods: {

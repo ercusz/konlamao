@@ -28,8 +28,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VCalendar from "v-calendar";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import moment from 'moment';
-
+import moment from "moment";
 
 const firebaseConfig = {
   apiKey: ***REMOVED***,

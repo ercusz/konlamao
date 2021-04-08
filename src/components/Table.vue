@@ -548,65 +548,74 @@
         </td>
       </tr>
     </table>
-    
-    <div class="card text-white bg-dark mb-3 shadow-lg" v-if="floorId=='first'">
-        <div >
-            <h3>แก้ไขรายละเอียดโต๊ะ</h3>
-            <h4>โต๊ะ: {{this.selectTable.id}}</h4>
-            <h6>ชั้น: {{this.selectTable.floor}}</h6>
-            <h6>โต๊ะว่าง: {{this.selectTable.available}}</h6>
-            <h6 class="mb-3">price: {{this.selectTable.price}} ฿</h6>
 
-            <div class="btn-group">
-            <select v-model="this.selectTable" class="form-select">
-              <option selected>กรุณาเลือกโต๊ะ</option>
-              <option v-bind:value="t" v-for="t in tables" :key="t">{{t.id}}</option>
-            </select>
-            
-          </div>
-         
+    <div
+      class="card text-white bg-dark mb-3 shadow-lg"
+      v-if="floorId == 'first'"
+    >
+      <div>
+        <h3>แก้ไขรายละเอียดโต๊ะ</h3>
+        <h4>โต๊ะ: {{ this.selectTable.id }}</h4>
+        <h6>ชั้น: {{ this.selectTable.floor }}</h6>
+        <h6>โต๊ะว่าง: {{ this.selectTable.available }}</h6>
+        <h6 class="mb-3">price: {{ this.selectTable.price }} ฿</h6>
+
+        <div class="btn-group">
+          <select v-model="this.selectTable" class="form-select">
+            <option selected>กรุณาเลือกโต๊ะ</option>
+            <option v-bind:value="t" v-for="t in tables" :key="t">{{
+              t.id
+            }}</option>
+          </select>
         </div>
-         <button
-              class="btn btn-dark mt-3 bg-success" 
-              @click="chooseTable(this.selectTable)"       
-            >
-              เลือก
-            </button>
+      </div>
+      <button
+        class="btn btn-dark mt-3 bg-success"
+        @click="chooseTable(this.selectTable)"
+      >
+        เลือก
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { db } from "../main"
+import { db } from "../main";
 
 export default {
   props: ["floorId", "selectedTable"],
   data() {
     return {
       tables: [],
-      selectTable: "กรุณาเลือกโต๊ะ",
+      selectTable: "กรุณาเลือกโต๊ะ"
     };
   },
-  created(){
-    db.collection('Tables').onSnapshot(res => {
+  created() {
+    db.collection("Tables").onSnapshot(res => {
       const changes = res.docChanges();
 
       changes.forEach(change => {
-        if (change.type === 'added' || change.type === "modified" || change.type === "removed"){
+        if (
+          change.type === "added" ||
+          change.type === "modified" ||
+          change.type === "removed"
+        ) {
           this.tables.push({
             ...change.doc.data(),
             id: change.doc.id
-          })
+          });
           //Update data realtime
-          const objIndex = this.tables.findIndex((obj => obj.id == change.doc.id))
-          this.tables[objIndex].available = change.doc.data().available
+          const objIndex = this.tables.findIndex(
+            obj => obj.id == change.doc.id
+          );
+          this.tables[objIndex].available = change.doc.data().available;
         }
-      })
-    })
+      });
+    });
   },
   methods: {
     className(table) {
-      if(typeof table !== 'undefined'){
+      if (typeof table !== "undefined") {
         //console.log(table)
         const ids = this.selectedTable.map(t => t.id);
         const idx = ids.indexOf(table.id);
@@ -617,15 +626,13 @@ export default {
       }
     },
     chooseTable(table) {
-      if(table.available === false){
-        alert("โต๊ะถูกจองแล้วไม่สามารถเลือกโต๊ะได้")
-      }
-      else{
+      if (table.available === false) {
+        alert("โต๊ะถูกจองแล้วไม่สามารถเลือกโต๊ะได้");
+      } else {
         return [this.$emit("chooseTable", table)];
       }
-      
     }
-  }  
+  }
 };
 </script>
 

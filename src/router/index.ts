@@ -5,7 +5,7 @@ import Login from "@/views/Login.vue";
 import Reservation from "@/views/Reservation.vue";
 import History from "@/views/History.vue";
 import firebase from "firebase/app";
-import Admin from "@/views/Admin.vue"
+import Admin from "@/views/Admin.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -71,18 +71,18 @@ const router = createRouter({
 
 const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-          unsubscribe();
-          resolve(user);
-      }, reject);
-  })
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
 };
 
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  if (requiresAuth && !await getCurrentUser()){
-    next('login');
-  }else{
+  if (requiresAuth && !(await getCurrentUser())) {
+    next("login");
+  } else {
     next();
   }
 });

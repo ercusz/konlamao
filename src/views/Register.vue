@@ -189,15 +189,15 @@ export default {
   },
   methods: {
     onSubmit(schema) {
-
       firebase
         .auth()
         .createUserWithEmailAndPassword(schema.email, schema.password)
-        .then((data) => {
+        .then(data => {
           data.user
             .updateProfile({
               displayName: schema.username
-            }).then(() => {
+            })
+            .then(() => {
               db.collection("users")
                 .doc(firebase.auth().currentUser.uid)
                 .set({

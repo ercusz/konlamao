@@ -28,7 +28,6 @@
               placeholder="Password"
             />
 
-
             <button
               type="submit"
               class="btn btn-dark mt-3 mb-5 bg-danger"
@@ -89,7 +88,7 @@ export default {
         .signInWithEmailAndPassword(schema.email, schema.password)
         .then(() => {
           alert("Successfully logged in");
-          this.$router.push({name:'Home'});
+          this.$router.push({ name: "Home" });
         })
         .catch(error => {
           alert(error.message);

@@ -27,7 +27,7 @@
             >
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item" v-if="this.user!=null">
+                <li class="nav-item" v-if="this.user != null">
                   <router-link
                     to="/"
                     active-link="active"
@@ -36,7 +36,7 @@
                     >Home</router-link
                   >
                 </li>
-                <li class="nav-item" v-if="this.user==null">
+                <li class="nav-item" v-if="this.user == null">
                   <router-link
                     to="/register"
                     active-link="active"
@@ -44,12 +44,12 @@
                     >Register</router-link
                   >
                 </li>
-                <li class="nav-item" v-if="this.user==null">
+                <li class="nav-item" v-if="this.user == null">
                   <router-link to="/login" active-link="active" class="nav-link"
                     >Login</router-link
                   >
                 </li>
-                <li class="nav-item" v-if="this.user!=null">
+                <li class="nav-item" v-if="this.user != null">
                   <router-link
                     to="/reservation"
                     active-link="active"
@@ -57,34 +57,55 @@
                     >จองทันที</router-link
                   >
                 </li>
-                <li class="nav-item" v-if="this.user!=null">
+                <li class="nav-item" v-if="this.user != null">
                   <div class="dropdown">
-                  <button 
-                    class="btn nav-link dropdown-toggle shadow-lg" 
-                    id="dropdownMenu2" data-bs-toggle="dropdown" 
-                    aria-expanded="false"
-                    style="border-style:none;"
-                  >
-                    <span class="userCircle bg-danger bg-gradient" >
-                    {{ getFirstChar() }}
-                    </span>
-                    {{this.username}}
-                  </button>
-                  <ul v-if="this.user!=null" class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenu2">
-                    <li v-if="this.isAdmin">
-                      <button class="dropdown-item" type="button">
-                      <router-link to="/admin" class="text-danger" style="text-decoration:none; font-weight:bold">ระบบจัดการข้อมูล</router-link>
-                      </button>
-                    </li>
-                    <li>
-                      <button class="dropdown-item" type="button">
-                      <router-link to="/history" style="text-decoration:none; color:white; font-weight:bold">ประวัติการจอง</router-link>
-                      </button>
-                    </li>
-                    <li><button class="dropdown-item" type="button" @click="logOut()">ออกจากระบบ</button></li>
-                  </ul>
-                </div>
-                  
+                    <button
+                      class="btn nav-link dropdown-toggle shadow-lg"
+                      id="dropdownMenu2"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style="border-style:none;"
+                    >
+                      <span class="userCircle bg-danger bg-gradient">
+                        {{ getFirstChar() }}
+                      </span>
+                      {{ this.username }}
+                    </button>
+                    <ul
+                      v-if="this.user != null"
+                      class="dropdown-menu dropdown-menu-dark dropdown-menu-end"
+                      aria-labelledby="dropdownMenu2"
+                    >
+                      <li v-if="this.isAdmin">
+                        <button class="dropdown-item" type="button">
+                          <router-link
+                            to="/admin"
+                            class="text-danger"
+                            style="text-decoration:none; font-weight:bold"
+                            >ระบบจัดการข้อมูล</router-link
+                          >
+                        </button>
+                      </li>
+                      <li>
+                        <button class="dropdown-item" type="button">
+                          <router-link
+                            to="/history"
+                            style="text-decoration:none; color:white; font-weight:bold"
+                            >ประวัติการจอง</router-link
+                          >
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="dropdown-item"
+                          type="button"
+                          @click="logOut()"
+                        >
+                          ออกจากระบบ
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -108,21 +129,21 @@
 
 <script>
 import firebase from "firebase";
-import { db } from "./main"
+import { db } from "./main";
 
 export default {
-  data () {
+  data() {
     return {
       user: null,
       username: null,
       isAdmin: false
-    }
+    };
   },
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.user = user
-        this.getUsername()
+        this.user = user;
+        this.getUsername();
       } else {
         this.user = null;
       }
@@ -130,31 +151,37 @@ export default {
   },
   methods: {
     logOut() {
-      firebase.auth().signOut().then(() => {
-        firebase.auth().onAuthStateChanged(() => {
-          this.$router.push('/login')
-        })
-      })
-    },
-    getUsername(){
-      if(this.user!=null){
-        db.collection("users").doc(this.user.uid)
-        .get().then((doc) => {
-            if (doc.exists) {
-                this.username = doc.data().username
-                this.isAdmin = doc.data().isAdmin
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch((error) => {
-            console.log("Error getting document:", error);
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          firebase.auth().onAuthStateChanged(() => {
+            this.$router.push("/login");
+          });
         });
+    },
+    getUsername() {
+      if (this.user != null) {
+        db.collection("users")
+          .doc(this.user.uid)
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              this.username = doc.data().username;
+              this.isAdmin = doc.data().isAdmin;
+            } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+            }
+          })
+          .catch(error => {
+            console.log("Error getting document:", error);
+          });
       }
     },
-    getFirstChar(){
-      if(this.username!=null && typeof this.username !== 'undefined'){
-        return this.username.substring(0, 1)
+    getFirstChar() {
+      if (this.username != null && typeof this.username !== "undefined") {
+        return this.username.substring(0, 1);
       }
     }
   }
@@ -204,7 +231,6 @@ body {
   background-color: transparent;
   border-bottom: 0.25rem solid transparent;
 }
-
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
